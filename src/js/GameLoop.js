@@ -9,15 +9,10 @@ export class GameLoop {
   }
 
   mainLoop (currentTime) {
-
-
-
-
     this.lastTime = currentTime
 
     this.id = this.requestAnimationFrame(this.mainLoop)
   }
-
 
   calcFps (delta) {
     return 1000 / delta
@@ -30,5 +25,4 @@ export class GameLoop {
   stop () {
     this.cancelAnimationFrame(this.id)
   }
-
 }

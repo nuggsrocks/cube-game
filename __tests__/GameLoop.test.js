@@ -1,11 +1,10 @@
 import { GameLoop } from '../src/js/GameLoop'
 
-
 describe('GameLoop', () => {
   const mockId = '123abc'
 
   let mockRequestAnimationFrame = jest.fn()
-  let mockCancelAnimationFrame = jest.fn()
+  const mockCancelAnimationFrame = jest.fn()
 
   describe('mainLoop()', () => {
     it.each([
@@ -55,11 +54,11 @@ describe('GameLoop', () => {
 
   describe('calcFps()', () => {
     it.each([
-      {delta: 1000 / 60, fps: 60},
-      {delta: 1000 / 50, fps: 50},
-      {delta: 1000 / 30, fps: 30},
-      {delta: 1000 / 100, fps: 100}
-    ])('should return correct fps for given delta $delta ms', ({delta, fps}) => {
+      { delta: 1000 / 60, fps: 60 },
+      { delta: 1000 / 50, fps: 50 },
+      { delta: 1000 / 30, fps: 30 },
+      { delta: 1000 / 100, fps: 100 }
+    ])('should return correct fps for given delta $delta ms', ({ delta, fps }) => {
       const gameLoop = new GameLoop()
 
       expect(Math.round(gameLoop.calcFps(delta))).toEqual(fps)
