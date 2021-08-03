@@ -1,5 +1,5 @@
 export class Rect {
-  constructor ({x = 0, y = 0, size = 0} = {}) {
+  constructor ({ x = 0, y = 0, size = 0 } = {}) {
     this.x = x
     this.y = y
     this.size = size
@@ -10,7 +10,7 @@ export class Rect {
     this.y += deltaY
   }
 
-  hasCollidedWithBorder(canvas) {
+  hasCollidedWithBorder (canvas) {
     let collidedBorder = false
 
     if (this.x < 0) {
@@ -40,12 +40,12 @@ export class Rect {
     return collidedBorder
   }
 
-  hasCollidedWithRect(rect) {
+  hasCollidedWithRect (rect) {
     const rectPoints = [
-      {x: rect.x, y: rect.y},
-      {x: rect.x + rect.size, y: rect.y},
-      {x: rect.x, y: rect.y + rect.size},
-      {x: rect.x + rect.size, y: rect.y + rect.size}
+      { x: rect.x, y: rect.y },
+      { x: rect.x + rect.size, y: rect.y },
+      { x: rect.x, y: rect.y + rect.size },
+      { x: rect.x + rect.size, y: rect.y + rect.size }
     ]
 
     for (const point of rectPoints) {
@@ -53,8 +53,6 @@ export class Rect {
         return true
       }
     }
-
-
 
     return false
   }
