@@ -8,11 +8,11 @@ describe('GameLoop', () => {
 
   describe('time(currentTime)', () => {
     it.each([
-      {start: 1000, current: 2000, expected: 1000},
-      {start: 16, current: 32, expected: 16},
-      {start: 100, current: 250, expected: 150},
-      {start: 32, current: 100, expected: 68}
-    ])('should return time elapsed from startTime to currentTime', ({start, current, expected}) => {
+      { start: 1000, current: 2000, expected: 1000 },
+      { start: 16, current: 32, expected: 16 },
+      { start: 100, current: 250, expected: 150 },
+      { start: 32, current: 100, expected: 68 }
+    ])('should return time elapsed from startTime to currentTime', ({ start, current, expected }) => {
       const gameLoop = new GameLoop()
 
       gameLoop.startTime = start
