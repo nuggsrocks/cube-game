@@ -1,8 +1,10 @@
 export class Rect {
-  constructor ({ x = 0, y = 0, size = 0 } = {}) {
+  constructor ({ x = 0, y = 0, size = 0, speedX = 0, speedY = 0 } = {}) {
     this.x = x
     this.y = y
     this.size = size
+    this.speedX = speedX
+    this.speedY = speedY
   }
 
   move (deltaX, deltaY) {
@@ -55,5 +57,21 @@ export class Rect {
     }
 
     return false
+  }
+
+  reverseSpeed (...axes) {
+    for (const axis of axes) {
+      if (axis === 'x') {
+        this.speedX *= -1
+        if (this.speedX === 0) {
+          this.speedX = 0
+        }
+      } else {
+        this.speedY *= -1
+        if (this.speedY === 0) {
+          this.speedY = 0
+        }
+      }
+    }
   }
 }

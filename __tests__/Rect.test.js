@@ -68,4 +68,21 @@ describe('Rect', () => {
       })
     })
   })
+
+  describe('reverseSpeed(...axes)', () => {
+
+    it.each([
+      {rect: {speedX: 1, speedY: 1}, axes: ['x'], expected: {speedX: -1, speedY: 1}},
+      {rect: {speedX: 1, speedY: 1}, axes: ['y'], expected: {speedX: 1, speedY: -1}},
+      {rect: {speedX: 1, speedY: 1}, axes: ['x', 'y'], expected: {speedX: -1, speedY: -1}},
+      {rect: {speedX: -1, speedY: -1}, axes: ['x', 'y'], expected: {speedX: 1, speedY: 1}},
+      {rect: {speedX: 0, speedY: 0}, axes: ['x', 'y'], expected: {speedX: 0, speedY: 0}}
+    ])('should reverse speed along given axes', ({rect, axes, expected}) => {
+      rect = new Rect(rect)
+
+      rect.reverseSpeed(...axes)
+
+      expect(rect).toEqual(new Rect(expected))
+    })
+  })
 })

@@ -6,18 +6,45 @@ describe('GameLoop', () => {
   let mockRequestAnimationFrame = jest.fn()
   const mockCancelAnimationFrame = jest.fn()
 
+  describe('time(currentTime)', () => {
+    it.each([
+      {start: 1000, current: 2000, expected: 1000},
+      {start: 16, current: 32, expected: 16},
+      {start: 100, current: 250, expected: 150},
+      {start: 32, current: 100, expected: 68}
+    ])('should return time elapsed from startTime to currentTime', ({start, current, expected}) => {
+      const gameLoop = new GameLoop()
+
+      gameLoop.startTime = start
+
+      expect(gameLoop.time(current)).toEqual(expected)
+    })
+  })
+
   describe('mainLoop()', () => {
     it.each([
       1000,
       2000,
       2016,
       2033
-    ])('should set lastTime property to time passed into mainLoop (time: %i)', (time) => {
+    ])('should set lastTime property to each time passed into mainLoop (time: %i)', (time) => {
       const gameLoop = new GameLoop(mockRequestAnimationFrame)
 
       gameLoop.mainLoop(time)
 
       expect(gameLoop).toHaveProperty('lastTime', time)
+    })
+
+    it('should set startTime property to only first time passed into mainLoop', () => {
+      const gameLoop = new GameLoop()
+
+      const times = [10, 20, 30, 40, 50, 60, 70]
+
+      for (const time of times) {
+        gameLoop.mainLoop(time)
+      }
+
+      expect(gameLoop).toHaveProperty('startTime', times[0])
     })
   })
 
@@ -52,7 +79,7 @@ describe('GameLoop', () => {
     })
   })
 
-  describe('calcFps()', () => {
+  describe('calcFps(delta)', () => {
     it.each([
       { delta: 1000 / 60, fps: 60 },
       { delta: 1000 / 50, fps: 50 },

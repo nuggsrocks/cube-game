@@ -1,14 +1,21 @@
 export class GameLoop {
   constructor (requestAnimationFrame = () => {}, cancelAnimationFrame = () => {}) {
-    this.frames = 0
-
+    this.startTime = null
     this.lastTime = null
     this.id = null
     this.requestAnimationFrame = requestAnimationFrame
     this.cancelAnimationFrame = cancelAnimationFrame
   }
 
+  time (currentTime) {
+    return currentTime - this.startTime
+  }
+
   mainLoop (currentTime) {
+    if (this.startTime === null) {
+      this.startTime = currentTime
+    }
+
     this.lastTime = currentTime
 
     this.id = this.requestAnimationFrame(this.mainLoop)
