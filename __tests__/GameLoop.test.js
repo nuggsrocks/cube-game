@@ -1,4 +1,5 @@
 import { GameLoop } from '../src/js/GameLoop'
+import { Rect } from '../src/js/Rect'
 
 describe('GameLoop', () => {
   const mockId = '123abc'
@@ -45,6 +46,62 @@ describe('GameLoop', () => {
       }
 
       expect(gameLoop).toHaveProperty('startTime', times[0])
+    })
+
+    it.each([
+      {
+        player: {x: 10, y: 10, size: 10},
+        enemies: [
+          {x: 15, y: 15, size: 10},
+          {x: 25, y: 25, size: 10},
+          {x: 35, y: 35, size: 10}
+        ],
+        called: true
+      },
+      {
+        player: {x: 10, y: 10, size: 10},
+        enemies: [
+          {x: 25, y: 25, size: 10},
+          {x: 0, y: 0, size: 10},
+          {x: 35, y: 35, size: 10}
+        ],
+        called: false
+      },
+      {
+        player: {x: 10, y: 10, size: 10},
+        enemies: [
+          {x: 5, y: 5, size: 10},
+          {x: 15, y: 15, size: 10},
+          {x: 35, y: 35, size: 10}
+        ],
+        called: true
+      },
+      {
+        player: {x: 0, y: 0, size: 10},
+        enemies: [
+          {x: 0, y: 10, size: 10},
+          {x: 10, y: 0, size: 10},
+          {x: 0, y: 0, size: 0}
+        ],
+        called: false
+      }
+    ])('should call this.stop() if player has collided with an enemy', ({player, enemies, called}) => {
+      player = new Rect(player)
+
+      enemies = enemies.map(enemy => new Rect(enemy))
+
+
+      const gameLoop = new GameLoop(mockRequestAnimationFrame, mockCancelAnimationFrame, player, enemies)
+
+      jest.spyOn(gameLoop, 'stop')
+
+      gameLoop.mainLoop()
+
+      if (called === true) {
+        expect(gameLoop.stop).toHaveBeenCalled()
+      } else {
+        expect(gameLoop.stop).not.toHaveBeenCalled()
+      }
     })
   })
 

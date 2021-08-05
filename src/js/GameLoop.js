@@ -1,10 +1,18 @@
+import { Rect } from './Rect'
+
 export class GameLoop {
-  constructor (requestAnimationFrame = () => {}, cancelAnimationFrame = () => {}) {
+  constructor (
+    requestAnimationFrame = () => {}, cancelAnimationFrame = () => {},
+    player = new Rect(), enemies = []) {
+
     this.startTime = null
     this.lastTime = null
     this.id = null
     this.requestAnimationFrame = requestAnimationFrame
     this.cancelAnimationFrame = cancelAnimationFrame
+
+    this.player = player
+    this.enemies = enemies
   }
 
   time (currentTime) {
@@ -14,6 +22,13 @@ export class GameLoop {
   mainLoop (currentTime) {
     if (this.startTime === null) {
       this.startTime = currentTime
+    }
+
+
+    for (const enemy of this.enemies) {
+      if (this.player.hasCollidedWithRect(enemy)) {
+        return this.stop()
+      }
     }
 
     this.lastTime = currentTime
