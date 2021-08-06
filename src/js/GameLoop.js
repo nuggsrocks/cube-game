@@ -1,9 +1,7 @@
-import { Rect } from './Rect'
-
 export class GameLoop {
   constructor (
     requestAnimationFrame = () => {}, cancelAnimationFrame = () => {},
-    player = new Rect(), enemies = []) {
+    player = {}, enemies = []) {
     this.times = {
       start: null,
       last: null,

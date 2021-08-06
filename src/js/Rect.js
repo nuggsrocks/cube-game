@@ -12,6 +12,10 @@ export class Rect {
     this.y += deltaY
   }
 
+  draw (ctx) {
+    ctx.fillRect(this.x, this.y, this.size, this.size)
+  }
+
   hasCollidedWithBorder (canvas) {
     let collidedBorder = false
 
