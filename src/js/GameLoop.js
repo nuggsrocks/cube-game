@@ -4,8 +4,12 @@ export class GameLoop {
   constructor (
     requestAnimationFrame = () => {}, cancelAnimationFrame = () => {},
     player = new Rect(), enemies = []) {
-    this.startTime = null
-    this.lastTime = null
+    this.times = {
+      start: null,
+      last: null,
+      game: 0
+    }
+
     this.id = null
     this.requestAnimationFrame = requestAnimationFrame
     this.cancelAnimationFrame = cancelAnimationFrame
@@ -15,13 +19,15 @@ export class GameLoop {
   }
 
   time (currentTime) {
-    return currentTime - this.startTime
+    return currentTime - this.times.start
   }
 
   mainLoop (currentTime) {
-    if (this.startTime === null) {
-      this.startTime = currentTime
+    if (this.times.start === null) {
+      this.times.start = currentTime
     }
+
+    this.times.game = this.time(currentTime)
 
     for (const enemy of this.enemies) {
       if (this.player.hasCollidedWithRect(enemy)) {
@@ -29,7 +35,7 @@ export class GameLoop {
       }
     }
 
-    this.lastTime = currentTime
+    this.times.last = currentTime
 
     this.id = this.requestAnimationFrame(this.mainLoop)
   }
