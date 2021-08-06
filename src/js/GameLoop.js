@@ -1,6 +1,9 @@
 export class GameLoop {
   constructor (
-    requestAnimationFrame = () => {}, cancelAnimationFrame = () => {},
+    window = {
+      requestAnimationFrame: () => {},
+      cancelAnimationFrame: () => {}
+    },
     player = {}, enemies = []) {
     this.times = {
       start: null,
@@ -9,11 +12,12 @@ export class GameLoop {
     }
 
     this.id = null
-    this.requestAnimationFrame = requestAnimationFrame
-    this.cancelAnimationFrame = cancelAnimationFrame
+    this.window = window
 
     this.player = player
     this.enemies = enemies
+
+    this.mainLoop = this.mainLoop.bind(this)
   }
 
   time (currentTime) {
@@ -35,7 +39,7 @@ export class GameLoop {
 
     this.times.last = currentTime
 
-    this.id = this.requestAnimationFrame(this.mainLoop)
+    this.id = this.window.requestAnimationFrame(this.mainLoop)
   }
 
   calcFps (delta) {
@@ -43,10 +47,10 @@ export class GameLoop {
   }
 
   start () {
-    this.id = this.requestAnimationFrame(this.mainLoop)
+    this.id = this.window.requestAnimationFrame(this.mainLoop)
   }
 
   stop () {
-    this.cancelAnimationFrame(this.id)
+    this.window.cancelAnimationFrame(this.id)
   }
 }

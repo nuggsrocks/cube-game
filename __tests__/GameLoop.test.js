@@ -4,8 +4,10 @@ import { Rect } from '../src/js/Rect'
 describe('GameLoop', () => {
   const mockId = '123abc'
 
-  let mockRequestAnimationFrame = jest.fn()
-  const mockCancelAnimationFrame = jest.fn()
+  let mockWindow = {
+    requestAnimationFrame: jest.fn(),
+    cancelAnimationFrame: jest.fn()
+  }
 
   describe('time(currentTime)', () => {
     it.each([
@@ -29,7 +31,7 @@ describe('GameLoop', () => {
       2016,
       2033
     ])('should set times.last property to each time passed into mainLoop (time: %i)', (time) => {
-      const gameLoop = new GameLoop(mockRequestAnimationFrame)
+      const gameLoop = new GameLoop(mockWindow)
 
       gameLoop.mainLoop(time)
 
@@ -104,7 +106,7 @@ describe('GameLoop', () => {
 
       enemies = enemies.map(enemy => new Rect(enemy))
 
-      const gameLoop = new GameLoop(mockRequestAnimationFrame, mockCancelAnimationFrame, player, enemies)
+      const gameLoop = new GameLoop(mockWindow, player, enemies)
 
       jest.spyOn(gameLoop, 'stop')
 
@@ -119,17 +121,17 @@ describe('GameLoop', () => {
   })
 
   describe('start()', () => {
-    mockRequestAnimationFrame = jest.fn(() => mockId)
+    mockWindow.requestAnimationFrame = jest.fn(() => mockId)
     it('should pass main loop function into requestAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockRequestAnimationFrame)
+      const gameLoop = new GameLoop(mockWindow)
 
       gameLoop.start()
 
-      expect(mockRequestAnimationFrame).toHaveBeenCalledWith(gameLoop.mainLoop)
+      expect(mockWindow.requestAnimationFrame).toHaveBeenCalledWith(gameLoop.mainLoop)
     })
 
     it('should set id property to value returned by requestAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockRequestAnimationFrame)
+      const gameLoop = new GameLoop(mockWindow)
 
       gameLoop.start()
 
@@ -139,13 +141,13 @@ describe('GameLoop', () => {
 
   describe('stop()', () => {
     it('should pass id property into cancelAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockRequestAnimationFrame, mockCancelAnimationFrame)
+      const gameLoop = new GameLoop(mockWindow)
 
       gameLoop.id = mockId
 
       gameLoop.stop()
 
-      expect(mockCancelAnimationFrame).toHaveBeenCalledWith(mockId)
+      expect(mockWindow.cancelAnimationFrame).toHaveBeenCalledWith(mockId)
     })
   })
 

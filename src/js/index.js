@@ -5,7 +5,11 @@ import { GameLoop } from './GameLoop'
 
 const player = new Rect({x: 10, y: 10, size: 10})
 
-const game = new GameLoop(requestAnimationFrame, cancelAnimationFrame, player)
+const enemies = [
+  new Rect({x: 200, y: 10, size: 20, speedX: 1, speedY: -1})
+]
+
+const game = new GameLoop(window, player, enemies)
 
 const canvas = document.createElement('canvas')
 
@@ -16,4 +20,7 @@ canvas.height = root.clientHeight
 
 root.append(canvas)
 
+game.start()
 
+
+setTimeout(() => game.stop(), 1000)
