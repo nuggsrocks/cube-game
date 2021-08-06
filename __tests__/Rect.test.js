@@ -24,7 +24,7 @@ describe('Rect', () => {
       fillRect: jest.fn()
     }
     it('should draw rect at current position on given canvas context', () => {
-      const rect = new Rect({x: 100, y: 300, size: 250})
+      const rect = new Rect({ x: 100, y: 300, size: 250 })
 
       rect.draw(mockCtx)
 

@@ -4,7 +4,7 @@ import { Rect } from '../src/js/Rect'
 describe('GameLoop', () => {
   const mockId = '123abc'
 
-  let mockWindow = {
+  const mockWindow = {
     requestAnimationFrame: jest.fn(),
     cancelAnimationFrame: jest.fn()
   }
@@ -51,10 +51,10 @@ describe('GameLoop', () => {
     })
 
     it.each([
-      {start: 1000, current: 2000, expected: 1000},
-      {start: 100, current: 2000, expected: 1900},
-      {start: 16, current: 20032, expected: 20016},
-    ])('should set times.game property to time returned by time(currentTime)', ({start, current, expected}) => {
+      { start: 1000, current: 2000, expected: 1000 },
+      { start: 100, current: 2000, expected: 1900 },
+      { start: 16, current: 20032, expected: 20016 }
+    ])('should set times.game property to time returned by time(currentTime)', ({ start, current, expected }) => {
       const gameLoop = new GameLoop()
 
       gameLoop.times.start = start
