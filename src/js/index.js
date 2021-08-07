@@ -9,8 +9,6 @@ const enemies = [
   new Rect({ x: 200, y: 10, size: 20, speedX: 1, speedY: -1 })
 ]
 
-const game = new GameLoop(window, player, enemies)
-
 const canvas = document.createElement('canvas')
 
 const root = document.querySelector('#root')
@@ -20,6 +18,6 @@ canvas.height = root.clientHeight
 
 root.append(canvas)
 
-game.start()
+const game = new GameLoop({ window, player, enemies, canvas })
 
-setTimeout(() => game.stop(), 1000)
+game.start()

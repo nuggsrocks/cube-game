@@ -12,7 +12,7 @@ export class Rect {
     this.y += deltaY
   }
 
-  draw (ctx) {
+  draw (ctx = { fillRect: () => {} }) {
     ctx.fillRect(this.x, this.y, this.size, this.size)
   }
 

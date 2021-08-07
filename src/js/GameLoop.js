@@ -1,10 +1,20 @@
 export class GameLoop {
-  constructor (
+  constructor ({
     window = {
       requestAnimationFrame: () => {},
       cancelAnimationFrame: () => {}
     },
-    player = {}, enemies = []) {
+    player = {
+      draw: () => {}
+    },
+    enemies = [],
+    canvas = {
+      getContext: () => ({
+        clearRect: () => {},
+        fillRect: () => {}
+      })
+    }
+  } = {}) {
     this.times = {
       start: null,
       last: null,
@@ -16,6 +26,8 @@ export class GameLoop {
 
     this.player = player
     this.enemies = enemies
+
+    this.canvas = canvas
 
     this.mainLoop = this.mainLoop.bind(this)
   }
@@ -30,6 +42,16 @@ export class GameLoop {
     }
 
     this.times.game = this.time(currentTime)
+
+    const ctx = this.canvas.getContext('2d')
+
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    this.player.draw(ctx)
+
+    for (const enemy of this.enemies) {
+      enemy.draw(ctx)
+    }
 
     for (const enemy of this.enemies) {
       if (this.player.hasCollidedWithRect(enemy)) {

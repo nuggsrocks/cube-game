@@ -31,7 +31,7 @@ describe('GameLoop', () => {
       2016,
       2033
     ])('should set times.last property to each time passed into mainLoop (time: %i)', (time) => {
-      const gameLoop = new GameLoop(mockWindow)
+      const gameLoop = new GameLoop({ window: mockWindow })
 
       gameLoop.mainLoop(time)
 
@@ -62,6 +62,37 @@ describe('GameLoop', () => {
       gameLoop.mainLoop(current)
 
       expect(gameLoop).toHaveProperty('times.game', expected)
+    })
+
+    it('should call draw method for player and each enemy on each loop', () => {
+      const player = new Rect({ x: 10, y: 10, size: 10 })
+
+      const enemies = [
+        new Rect({ x: 200, y: 300, size: 15 }),
+        new Rect({ x: 250, y: 325, size: 25 })
+      ]
+
+      jest.spyOn(player, 'draw')
+
+      for (const enemy of enemies) {
+        jest.spyOn(enemy, 'draw')
+      }
+
+      const mockContext = { fillRect: () => {} }
+
+      const mockCanvas = {
+        getContext: () => mockContext
+      }
+
+      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
+
+      gameLoop.mainLoop(10)
+
+      expect(player.draw).toHaveBeenCalledWith(mockContext)
+
+      for (const enemy of enemies) {
+        expect(enemy.draw).toHaveBeenCalledWith(mockContext)
+      }
     })
 
     it.each([
@@ -106,7 +137,7 @@ describe('GameLoop', () => {
 
       enemies = enemies.map(enemy => new Rect(enemy))
 
-      const gameLoop = new GameLoop(mockWindow, player, enemies)
+      const gameLoop = new GameLoop({ window: mockWindow, player, enemies })
 
       jest.spyOn(gameLoop, 'stop')
 
@@ -123,7 +154,7 @@ describe('GameLoop', () => {
   describe('start()', () => {
     mockWindow.requestAnimationFrame = jest.fn(() => mockId)
     it('should pass main loop function into requestAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockWindow)
+      const gameLoop = new GameLoop({ window: mockWindow })
 
       gameLoop.start()
 
@@ -131,7 +162,7 @@ describe('GameLoop', () => {
     })
 
     it('should set id property to value returned by requestAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockWindow)
+      const gameLoop = new GameLoop({ window: mockWindow })
 
       gameLoop.start()
 
@@ -141,7 +172,7 @@ describe('GameLoop', () => {
 
   describe('stop()', () => {
     it('should pass id property into cancelAnimationFrame', () => {
-      const gameLoop = new GameLoop(mockWindow)
+      const gameLoop = new GameLoop({ window: mockWindow })
 
       gameLoop.id = mockId
 
