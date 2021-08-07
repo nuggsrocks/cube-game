@@ -5,7 +5,8 @@ export class GameLoop {
       cancelAnimationFrame: () => {}
     },
     player = {
-      draw: () => {}
+      draw: () => {},
+      move: () => {}
     },
     enemies = [],
     canvas = {
@@ -42,6 +43,14 @@ export class GameLoop {
     }
 
     this.times.game = this.time(currentTime)
+
+    this.player.move(this.player.speedX, this.player.speedY)
+
+    for (const enemy of this.enemies) {
+      enemy.move(enemy.speedX, enemy.speedY)
+    }
+
+
 
     const ctx = this.canvas.getContext('2d')
 

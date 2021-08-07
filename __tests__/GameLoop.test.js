@@ -64,7 +64,7 @@ describe('GameLoop', () => {
       expect(gameLoop).toHaveProperty('times.game', expected)
     })
 
-    it('should call draw method for player and each enemy on each loop', () => {
+    it('should call draw method for player and each enemy in each loop', () => {
       const player = new Rect({ x: 10, y: 10, size: 10 })
 
       const enemies = [
@@ -78,7 +78,7 @@ describe('GameLoop', () => {
         jest.spyOn(enemy, 'draw')
       }
 
-      const mockContext = { fillRect: () => {} }
+      const mockContext = { fillRect: () => {}, clearRect: () => {} }
 
       const mockCanvas = {
         getContext: () => mockContext
@@ -92,6 +92,37 @@ describe('GameLoop', () => {
 
       for (const enemy of enemies) {
         expect(enemy.draw).toHaveBeenCalledWith(mockContext)
+      }
+    })
+
+    it('should call move method for player and each enemy in each loop', () => {
+      const player = new Rect({ x: 10, y: 10, size: 10 })
+
+      const enemies = [
+        new Rect({ x: 200, y: 300, size: 15 }),
+        new Rect({ x: 250, y: 325, size: 25 })
+      ]
+
+      jest.spyOn(player, 'move')
+
+      for (const enemy of enemies) {
+        jest.spyOn(enemy, 'move')
+      }
+
+      const mockContext = { fillRect: () => {}, clearRect: () => {} }
+
+      const mockCanvas = {
+        getContext: () => mockContext
+      }
+
+      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
+
+      gameLoop.mainLoop(10)
+
+      expect(player.move).toHaveBeenCalled()
+
+      for (const enemy of enemies) {
+        expect(enemy.move).toHaveBeenCalled()
       }
     })
 
