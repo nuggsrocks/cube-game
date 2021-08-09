@@ -128,7 +128,7 @@ describe('GameLoop', () => {
 
     it.each([
       {
-        player: { x: 10, y: 10, size: 10 },
+        player: { x: 5.01, y: 5.01, size: 10 },
         enemies: [
           { x: 15, y: 15, size: 10 },
           { x: 25, y: 25, size: 10 },

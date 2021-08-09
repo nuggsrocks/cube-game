@@ -6,7 +6,8 @@ export class GameLoop {
     },
     player = {
       draw: () => {},
-      move: () => {}
+      move: () => {},
+      handleBorderCollision: () => {}
     },
     enemies = [],
     canvas = {
@@ -45,6 +46,8 @@ export class GameLoop {
     this.times.game = this.time(currentTime)
 
     this.player.move(this.player.speedX, this.player.speedY)
+
+    this.player.handleBorderCollision(this.canvas)
 
     for (const enemy of this.enemies) {
       enemy.move(enemy.speedX, enemy.speedY)

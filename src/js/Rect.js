@@ -16,34 +16,34 @@ export class Rect {
     ctx.fillRect(this.x, this.y, this.size, this.size)
   }
 
-  hasCollidedWithBorder (canvas) {
-    let collidedBorder = false
+  handleBorderCollision (canvas) {
+    let collision = false
 
     if (this.x < 0) {
-      collidedBorder = 'left'
+      this.reverseSpeed('x')
+      this.x = 0
+      collision = true
     }
 
     if (this.x > canvas.width - this.size) {
-      collidedBorder = 'right'
+      this.reverseSpeed('x')
+      this.x = canvas.width - this.size
+      collision = true
     }
 
     if (this.y < 0) {
-      if (collidedBorder !== false) {
-        collidedBorder = [collidedBorder, 'top']
-      } else {
-        collidedBorder = 'top'
-      }
+      this.reverseSpeed('y')
+      this.y = 0
+      collision = true
     }
 
     if (this.y > canvas.width - this.size) {
-      if (collidedBorder !== false) {
-        collidedBorder = [collidedBorder, 'bottom']
-      } else {
-        collidedBorder = 'bottom'
-      }
+      this.reverseSpeed('y')
+      this.y = canvas.height - this.size
+      collision = true
     }
 
-    return collidedBorder
+    return collision
   }
 
   hasCollidedWithRect (rect) {

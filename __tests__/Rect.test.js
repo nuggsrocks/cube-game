@@ -32,30 +32,116 @@ describe('Rect', () => {
     })
   })
 
-  describe('hasCollidedWithBorder(canvas)', () => {
+  describe('handleBorderCollision(canvas)', () => {
     describe('should return false if there is no collision', () => {
       it.each([
         { rect: { x: 0, y: 0, size: 10 }, canvas: { width: 100, height: 100 } },
         { rect: { x: 90, y: 90, size: 10 }, canvas: { width: 100, height: 100 } }
       ])('$rect and $canvas should return false', ({ rect, canvas }) => {
-        expect(new Rect(rect).hasCollidedWithBorder(canvas)).toEqual(false)
+        expect(new Rect(rect).handleBorderCollision(canvas)).toEqual(false)
       })
     })
 
-    describe('should return border(s) that rect has collided with if there is a collision', () => {
+    describe('should reverse speed and place rect on border if there is a collision', () => {
       it.each([
-        { rect: { x: -10, y: 0, size: 10 }, canvas: { width: 100, height: 100 }, expected: 'left' },
-        { rect: { x: 100, y: 0, size: 10 }, canvas: { width: 100, height: 100 }, expected: 'right' },
-        { rect: { x: 0, y: -10, size: 10 }, canvas: { width: 100, height: 100 }, expected: 'top' },
-        { rect: { x: 0, y: 100, size: 10 }, canvas: { width: 100, height: 100 }, expected: 'bottom' },
-        { rect: { x: -10, y: -10, size: 10 }, canvas: { width: 100, height: 100 }, expected: ['left', 'top'] },
-        { rect: { x: -10, y: 100, size: 10 }, canvas: { width: 100, height: 100 }, expected: ['left', 'bottom'] },
-        { rect: { x: 100, y: -10, size: 10 }, canvas: { width: 100, height: 100 }, expected: ['right', 'top'] },
-        { rect: { x: 100, y: 100, size: 10 }, canvas: { width: 100, height: 100 }, expected: ['right', 'bottom'] }
+        {
+          rect: {
+            x: -10, y: 0, size: 10, speedX: -1, speedY: 1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
+          }
+        },
+        {
+          rect: {
+            x: 100, y: 0, size: 10, speedX: 1, speedY: 1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 90, y: 0, size: 10, speedX: -1, speedY: 1
+          }
+        },
+        {
+          rect: {
+            x: 0, y: -10, size: 10, speedX: 1, speedY: -1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
+          }
+        },
+        {
+          rect: {
+            x: 0, y: 100, size: 10, speedX: 1, speedY: 1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 0, y: 90, size: 10, speedX: 1, speedY: -1
+          }
+        },
+        {
+          rect: {
+            x: -10, y: -10, size: 10, speedX: -1, speedY: -1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
+          }
+        },
+        {
+          rect: {
+            x: -10, y: 100, size: 10, speedX: -1, speedY: 1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 0, y: 90, size: 10, speedX: 1, speedY: -1
+          }
+        },
+        {
+          rect: {
+            x: 100, y: -10, size: 10 , speedX: 1, speedY: -1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 90, y: 0, size: 10 , speedX: -1, speedY: 1
+          }
+        },
+        {
+          rect: {
+            x: 100, y: 100, size: 10, speedX: 1, speedY: 1
+          },
+          canvas: {
+            width: 100, height: 100
+          },
+          expected: {
+            x: 90, y: 90, size: 10, speedX: -1, speedY: -1
+          }
+        }
       ])('$rect and $canvas should return $expected', ({ rect, canvas, expected }) => {
-        expect(new Rect(rect).hasCollidedWithBorder(canvas)).toEqual(expected)
+        rect = new Rect(rect)
+
+        expect(rect.handleBorderCollision(canvas)).toEqual(true)
+
+        expect(rect).toEqual(new Rect(expected))
+
       })
     })
+
   })
 
   describe('hasCollidedWithRect(rect)', () => {
