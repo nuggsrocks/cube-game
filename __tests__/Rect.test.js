@@ -112,13 +112,13 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 90.01, y: -0.01, size: 10 , speedX: 1, speedY: -1
+            x: 90.01, y: -0.01, size: 10, speedX: 1, speedY: -1
           },
           canvas: {
             width: 100, height: 200
           },
           expected: {
-            x: 90, y: 0, size: 10 , speedX: -1, speedY: 1
+            x: 90, y: 0, size: 10, speedX: -1, speedY: 1
           }
         },
         {
@@ -138,10 +138,8 @@ describe('Rect', () => {
         expect(rect.handleBorderCollision(canvas)).toEqual(true)
 
         expect(rect).toEqual(new Rect(expected))
-
       })
     })
-
   })
 
   describe('hasCollidedWithRect(rect)', () => {
