@@ -46,10 +46,10 @@ describe('Rect', () => {
       it.each([
         {
           rect: {
-            x: -10, y: 0, size: 10, speedX: -1, speedY: 1
+            x: -0.01, y: 0, size: 10, speedX: -1, speedY: 1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
             x: 0, y: 0, size: 10, speedX: 1, speedY: 1
@@ -57,10 +57,10 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 100, y: 0, size: 10, speedX: 1, speedY: 1
+            x: 90.01, y: 0, size: 10, speedX: 1, speedY: 1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
             x: 90, y: 0, size: 10, speedX: -1, speedY: 1
@@ -68,10 +68,10 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 0, y: -10, size: 10, speedX: 1, speedY: -1
+            x: 0, y: -0.01, size: 10, speedX: 1, speedY: -1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
             x: 0, y: 0, size: 10, speedX: 1, speedY: 1
@@ -79,21 +79,21 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 0, y: 100, size: 10, speedX: 1, speedY: 1
+            x: 0, y: 190.01, size: 10, speedX: 1, speedY: 1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
-            x: 0, y: 90, size: 10, speedX: 1, speedY: -1
+            x: 0, y: 190, size: 10, speedX: 1, speedY: -1
           }
         },
         {
           rect: {
-            x: -10, y: -10, size: 10, speedX: -1, speedY: -1
+            x: -0.01, y: -0.01, size: 10, speedX: -1, speedY: -1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
             x: 0, y: 0, size: 10, speedX: 1, speedY: 1
@@ -101,21 +101,21 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: -10, y: 100, size: 10, speedX: -1, speedY: 1
+            x: -0.01, y: 190.01, size: 10, speedX: -1, speedY: 1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
-            x: 0, y: 90, size: 10, speedX: 1, speedY: -1
+            x: 0, y: 190, size: 10, speedX: 1, speedY: -1
           }
         },
         {
           rect: {
-            x: 100, y: -10, size: 10 , speedX: 1, speedY: -1
+            x: 90.01, y: -0.01, size: 10 , speedX: 1, speedY: -1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
             x: 90, y: 0, size: 10 , speedX: -1, speedY: 1
@@ -123,13 +123,13 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 100, y: 100, size: 10, speedX: 1, speedY: 1
+            x: 90.01, y: 190.01, size: 10, speedX: 1, speedY: 1
           },
           canvas: {
-            width: 100, height: 100
+            width: 100, height: 200
           },
           expected: {
-            x: 90, y: 90, size: 10, speedX: -1, speedY: -1
+            x: 90, y: 190, size: 10, speedX: -1, speedY: -1
           }
         }
       ])('$rect and $canvas should return $expected', ({ rect, canvas, expected }) => {

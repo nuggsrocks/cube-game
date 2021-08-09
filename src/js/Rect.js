@@ -37,7 +37,7 @@ export class Rect {
       collision = true
     }
 
-    if (this.y > canvas.width - this.size) {
+    if (this.y > canvas.height - this.size) {
       this.reverseSpeed('y')
       this.y = canvas.height - this.size
       collision = true

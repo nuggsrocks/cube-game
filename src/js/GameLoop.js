@@ -51,6 +51,8 @@ export class GameLoop {
 
     for (const enemy of this.enemies) {
       enemy.move(enemy.speedX, enemy.speedY)
+
+      enemy.handleBorderCollision(this.canvas)
     }
 
     const ctx = this.canvas.getContext('2d')

@@ -126,6 +126,42 @@ describe('GameLoop', () => {
       }
     })
 
+    it('should call handleBorderCollision() for player and each enemy in each loop', () => {
+      const player = new Rect({ x: 10, y: 10, size: 10 })
+
+      const enemies = [
+        new Rect({ x: 200, y: 300, size: 15 }),
+        new Rect({ x: 250, y: 325, size: 25 })
+      ]
+
+      const mockCanvas = {
+        width: 100,
+        height: 100,
+        getContext: () => ({
+          clearRect: () => {},
+          fillRect: () => {}
+        })
+      }
+
+      jest.spyOn(player, 'handleBorderCollision')
+
+      for (const enemy of enemies) {
+        jest.spyOn(enemy, 'handleBorderCollision')
+      }
+
+      const gameLoop = new GameLoop({
+        window: mockWindow, player, enemies, canvas: mockCanvas
+      })
+
+      gameLoop.mainLoop(16)
+
+      expect(player.handleBorderCollision).toHaveBeenCalledWith(mockCanvas)
+
+      for (const enemy of enemies) {
+        expect(enemy.handleBorderCollision).toHaveBeenCalledWith(mockCanvas)
+      }
+    })
+
     it.each([
       {
         player: { x: 5.01, y: 5.01, size: 10 },
