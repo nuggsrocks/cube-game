@@ -7,9 +7,9 @@ export class Rect {
     this.speedY = speedY
   }
 
-  move (deltaX, deltaY) {
-    this.x += deltaX
-    this.y += deltaY
+  move (timeDelta) {
+    this.x += this.speedX / (10 / timeDelta)
+    this.y += this.speedY / (10 / timeDelta)
   }
 
   draw (ctx = { fillRect: () => {} }) {

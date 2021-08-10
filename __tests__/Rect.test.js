@@ -1,20 +1,43 @@
 import { Rect } from '../src/js/Rect'
 
 describe('Rect', () => {
-  describe('move(deltaX, deltaY)', () => {
-    describe('should change x and y values by given delta', () => {
+  describe('move(timeDelta)', () => {
+    describe('should change x and y values according to given time delta and rect speeds within five decimals', () => {
       it.each([
-        { deltaX: 10, deltaY: 10, expected: { x: 10, y: 10 } },
-        { deltaX: 100, deltaY: -10, expected: { x: 100, y: -10 } },
-        { deltaX: -10, deltaY: 100, expected: { x: -10, y: 100 } },
-        { deltaX: 10, deltaY: -500, expected: { x: 10, y: -500 } }
-      ])('Rect.move($deltaX, $deltaY)', ({ deltaX, deltaY, expected }) => {
-        const rect = new Rect()
+        {
+          rect: {
+            x: 0, y: 0, speedX: 1, speedY: 1
+          },
+          timeDelta: 16.66,
+          expected: {
+            x: 16.66 / 10, y: 16.66 / 10
+          }
+        },
+        {
+          rect: {
+            x: 0, y: 0, speedX: 5, speedY: -1
+          },
+          timeDelta: 33.33,
+          expected: {
+            x: 5 * 33.33 / 10, y: -1 * 33.33 / 10
+          }
+        },
+        {
+          rect: {
+            x: 0, y: 0, speedX: -10, speedY: 0.01
+          },
+          timeDelta: 20,
+          expected: {
+            x: -10 * 20 / 10, y: 0.01 * 20 / 10
+          }
+        }
+      ])('Rect.move($timeDelta)', ({ rect, timeDelta, expected }) => {
+        rect = new Rect(rect)
 
-        rect.move(deltaX, deltaY)
+        rect.move(timeDelta)
 
-        expect(rect).toHaveProperty('x', expected.x)
-        expect(rect).toHaveProperty('y', expected.y)
+        expect(rect.x).toBeCloseTo(expected.x, 5)
+        expect(rect.y).toBeCloseTo(expected.y, 5)
       })
     })
   })

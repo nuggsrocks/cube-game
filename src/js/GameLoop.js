@@ -45,12 +45,18 @@ export class GameLoop {
 
     this.times.game = this.time(currentTime)
 
-    this.player.move(this.player.speedX, this.player.speedY)
+    for (const enemy of this.enemies) {
+      if (this.player.hasCollidedWithRect(enemy)) {
+        return this.stop()
+      }
+    }
+
+    this.player.move(currentTime - this.times.last)
 
     this.player.handleBorderCollision(this.canvas)
 
     for (const enemy of this.enemies) {
-      enemy.move(enemy.speedX, enemy.speedY)
+      enemy.move(currentTime - this.times.last)
 
       enemy.handleBorderCollision(this.canvas)
     }
@@ -63,12 +69,6 @@ export class GameLoop {
 
     for (const enemy of this.enemies) {
       enemy.draw(ctx)
-    }
-
-    for (const enemy of this.enemies) {
-      if (this.player.hasCollidedWithRect(enemy)) {
-        return this.stop()
-      }
     }
 
     this.times.last = currentTime

@@ -119,10 +119,10 @@ describe('GameLoop', () => {
 
       gameLoop.mainLoop(10)
 
-      expect(player.move).toHaveBeenCalled()
+      expect(player.move).toHaveBeenCalledWith(10)
 
       for (const enemy of enemies) {
-        expect(enemy.move).toHaveBeenCalled()
+        expect(enemy.move).toHaveBeenCalledWith(10)
       }
     })
 
@@ -199,7 +199,7 @@ describe('GameLoop', () => {
         ],
         called: false
       }
-    ])('should call this.stop() if player has collided with an enemy', ({ player, enemies, called }) => {
+    ])('should call this.stop() if player has collided with one of enemies (case $#)', ({ player, enemies, called }) => {
       player = new Rect(player)
 
       enemies = enemies.map(enemy => new Rect(enemy))
