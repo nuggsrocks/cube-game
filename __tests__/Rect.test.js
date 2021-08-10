@@ -188,7 +188,7 @@ describe('Rect', () => {
         { rect1: { x: 0.1, y: 9.9, size: 10 }, rect2: { x: 10, y: 0, size: 10 } },
         { rect1: { x: 0, y: 0, size: 10 }, rect2: { x: 9.9, y: 9.9, size: 10 } },
         { rect1: { x: 9.9, y: 0, size: 10 }, rect2: { x: 0, y: 9.9, size: 10 } },
-        { rect1: { x: 0, y: 2, size: 6 }, rect2: { x: 3, y: 0, size: 10 } },
+        { rect1: { x: 0, y: 2, size: 6 }, rect2: { x: 3, y: 0, size: 10 } }
       ])('case $# should return true', ({ rect1, rect2 }) => {
         expect(new Rect(rect1).hasCollidedWithRect(new Rect(rect2))).toEqual(true)
       })
