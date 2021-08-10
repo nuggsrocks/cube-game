@@ -54,8 +54,29 @@ export class Rect {
       { x: rect.x + rect.size, y: rect.y + rect.size }
     ]
 
+    this.points = [
+      { x: this.x, y: this.y },
+      { x: this.x + this.size, y: this.y },
+      { x: this.x, y: this.y + this.size },
+      { x: this.x + this.size, y: this.y + this.size }
+    ]
+
     for (const point of rectPoints) {
-      if (point.x > this.x && point.x < this.x + this.size && point.y > this.y && point.y < this.y + this.size) {
+      const betweenXPoints = point.x > this.x && point.x < this.x + this.size
+
+      const betweenYPoints = point.y > this.y && point.y < this.y + this.size
+
+      if (betweenXPoints && betweenYPoints) {
+        return true
+      }
+    }
+
+    for (const point of this.points) {
+      const betweenXPoints = point.x > rect.x && point.x < rect.x + rect.size
+
+      const betweenYPoints = point.y > rect.y && point.y < rect.y + rect.size
+
+      if (betweenXPoints && betweenYPoints) {
         return true
       }
     }

@@ -155,7 +155,7 @@ describe('Rect', () => {
             x: 90, y: 190, size: 10, speedX: -1, speedY: -1
           }
         }
-      ])('$rect and $canvas should return $expected', ({ rect, canvas, expected }) => {
+      ])('case $#', ({ rect, canvas, expected }) => {
         rect = new Rect(rect)
 
         expect(rect.handleBorderCollision(canvas)).toEqual(true)
@@ -172,18 +172,24 @@ describe('Rect', () => {
         { rect1: { x: 90, y: 90, size: 10 }, rect2: { x: 85, y: 80, size: 10 } },
         { rect1: { x: 10, y: 0, size: 10 }, rect2: { x: 0, y: 0, size: 10 } },
         { rect1: { x: 0, y: 0, size: 100 }, rect2: { x: 0, y: 101, size: 10 } }
-      ])('$rect1 and $rect2 should return false', ({ rect1, rect2 }) => {
+      ])('case $# should return false', ({ rect1, rect2 }) => {
         expect(new Rect(rect1).hasCollidedWithRect(new Rect(rect2))).toEqual(false)
       })
     })
 
     describe('should return true if there is overlap', () => {
       it.each([
-        { rect1: { x: 0, y: 0, size: 10 }, rect2: { x: 5, y: 9.9, size: 10 } },
-        { rect1: { x: 90, y: 90, size: 10 }, rect2: { x: 95, y: 95, size: 10 } },
-        { rect1: { x: 10, y: 0, size: 10 }, rect2: { x: 5, y: 5, size: 10 } },
-        { rect1: { x: 0, y: 0, size: 100 }, rect2: { x: 99, y: 99, size: 10 } }
-      ])('$rect1 and $rect2 should return true', ({ rect1, rect2 }) => {
+        { rect1: { x: 0, y: 0, size: 10 }, rect2: { x: 9.9, y: 9.9, size: 10 } },
+        { rect1: { x: 10, y: 0, size: 10 }, rect2: { x: 0.1, y: 9.9, size: 10 } },
+        { rect1: { x: 9.9, y: 9.9, size: 10 }, rect2: { x: 0, y: 0, size: 10 } },
+        { rect1: { x: 0, y: 9.9, size: 10 }, rect2: { x: 9.9, y: 0, size: 10 } },
+        { rect1: { x: 3, y: 0, size: 10 }, rect2: { x: 0, y: 2, size: 6 } },
+        { rect1: { x: 9.9, y: 9.9, size: 10 }, rect2: { x: 0, y: 0, size: 10 } },
+        { rect1: { x: 0.1, y: 9.9, size: 10 }, rect2: { x: 10, y: 0, size: 10 } },
+        { rect1: { x: 0, y: 0, size: 10 }, rect2: { x: 9.9, y: 9.9, size: 10 } },
+        { rect1: { x: 9.9, y: 0, size: 10 }, rect2: { x: 0, y: 9.9, size: 10 } },
+        { rect1: { x: 0, y: 2, size: 6 }, rect2: { x: 3, y: 0, size: 10 } },
+      ])('case $# should return true', ({ rect1, rect2 }) => {
         expect(new Rect(rect1).hasCollidedWithRect(new Rect(rect2))).toEqual(true)
       })
     })
