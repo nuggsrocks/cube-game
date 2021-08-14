@@ -24,6 +24,66 @@ describe('GameLoop', () => {
     })
   })
 
+  describe('onKeyDown()', () => {
+    it.each([
+      { code: 'ArrowUp' },
+      { code: 'ArrowRight' },
+      { code: 'ArrowDown' },
+      { code: 'ArrowLeft' }
+    ])('should modify input state of given key to true', ({ code }) => {
+      const mockEvent = {code}
+
+      const gameLoop = new GameLoop()
+
+      gameLoop.onKeyDown(mockEvent)
+
+      expect(gameLoop.inputStates[code]).toEqual(true)
+    })
+    it.each([
+      { code: 'KeyD' },
+      { code: 'KeyE' }
+    ])('should not add other keys to inputStates object', ({code}) => {
+      const mockEvent = {code}
+
+      const gameLoop = new GameLoop()
+
+      gameLoop.onKeyDown(mockEvent)
+
+      expect(gameLoop.inputStates).not.toHaveProperty(code)
+    })
+  })
+
+  describe('onKeyUp()', () => {
+    it.each([
+      { code: 'ArrowUp' },
+      { code: 'ArrowRight' },
+      { code: 'ArrowDown' },
+      { code: 'ArrowLeft' }
+    ])('should modify input state of given key to false', ({ code }) => {
+      const mockEvent = {code}
+
+      const gameLoop = new GameLoop()
+
+      gameLoop.inputStates[code] = true
+
+      gameLoop.onKeyUp(mockEvent)
+
+      expect(gameLoop.inputStates[code]).toEqual(false)
+    })
+    it.each([
+      { code: 'KeyD' },
+      { code: 'KeyE' }
+    ])('should not add other keys to inputStates object', ({code}) => {
+      const mockEvent = {code}
+
+      const gameLoop = new GameLoop()
+
+      gameLoop.onKeyUp(mockEvent)
+
+      expect(gameLoop.inputStates).not.toHaveProperty(code)
+    })
+  })
+
   describe('mainLoop()', () => {
     it.each([
       1000,
