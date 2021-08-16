@@ -1,6 +1,7 @@
 import { GameLoop } from '../src/js/classes/GameLoop'
 import { Rect } from '../src/js/classes/Rect'
 import gameStates from '../src/js/constants/gameStates'
+import { Player } from '../src/js/classes/Player'
 
 describe('GameLoop', () => {
   const mockId = '123abc'
@@ -27,74 +28,6 @@ describe('GameLoop', () => {
     requestAnimationFrame: jest.fn(),
     cancelAnimationFrame: jest.fn()
   }
-
-  describe('onKeyDown()', () => {
-    it.each([
-      { code: 'ArrowUp' },
-      { code: 'ArrowRight' },
-      { code: 'ArrowDown' },
-      { code: 'ArrowLeft' }
-    ])('should modify input state of given key to true', ({ code }) => {
-      const mockEvent = {code}
-
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
-      })
-
-      gameLoop.onKeyDown(mockEvent)
-
-      expect(gameLoop.inputStates[code]).toEqual(true)
-    })
-    it.each([
-      { code: 'KeyD' },
-      { code: 'KeyE' }
-    ])('should not add other keys to inputStates object', ({code}) => {
-      const mockEvent = {code}
-
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
-      })
-
-      gameLoop.onKeyDown(mockEvent)
-
-      expect(gameLoop.inputStates).not.toHaveProperty(code)
-    })
-  })
-
-  describe('onKeyUp()', () => {
-    it.each([
-      { code: 'ArrowUp' },
-      { code: 'ArrowRight' },
-      { code: 'ArrowDown' },
-      { code: 'ArrowLeft' }
-    ])('should modify input state of given key to false', ({ code }) => {
-      const mockEvent = {code}
-
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
-      })
-
-      gameLoop.inputStates[code] = true
-
-      gameLoop.onKeyUp(mockEvent)
-
-      expect(gameLoop.inputStates[code]).toEqual(false)
-    })
-    it.each([
-      { code: 'KeyD' },
-      { code: 'KeyE' }
-    ])('should not add other keys to inputStates object', ({code}) => {
-      const mockEvent = {code}
-
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
-      })
-
-      gameLoop.onKeyUp(mockEvent)
-
-      expect(gameLoop.inputStates).not.toHaveProperty(code)
-    })
-  })
 
   describe('mainLoop()', () => {
     it.each([
@@ -220,7 +153,7 @@ describe('GameLoop', () => {
         called: false
       }
     ])('should call this.stop() if player has collided with one of enemies (case $#)', ({ player, enemies, called }) => {
-      player = new Rect(player)
+      player = new Player({ window: mockWindow, rect: player })
 
       enemies = enemies.map(enemy => new Rect(enemy))
 

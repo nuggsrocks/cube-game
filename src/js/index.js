@@ -2,6 +2,7 @@ import '../scss/style.scss'
 
 import { Rect } from './classes/Rect'
 import { GameLoop } from './classes/GameLoop'
+import { Player } from './classes/Player'
 
 const canvas = document.createElement('canvas')
 
@@ -12,7 +13,7 @@ canvas.height = root.clientHeight
 
 root.append(canvas)
 
-const player = new Rect({ x: 10, y: 10, size: 10 })
+const player = new Player({ window: window, rect: { x: 10, y: 10, size: 10 } })
 
 const getRandomNumber = (min, max) => {
   return Math.random() * max + min

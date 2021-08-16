@@ -15,19 +15,9 @@ export class GameLoop {
       game: 0
     }
 
-    this.inputStates = {
-      ArrowUp: false,
-      ArrowRight: false,
-      ArrowDown: false,
-      ArrowLeft: false,
-      Space: false
-    }
 
     this.id = null
     this.window = window
-
-    this.window.onkeydown = (event) => this.onKeyDown(event)
-    this.window.onkeyup = (event) => this.onKeyUp(event)
 
     this.player = player
     this.enemies = enemies
@@ -37,17 +27,8 @@ export class GameLoop {
     this.mainLoop = this.mainLoop.bind(this)
   }
 
-  onKeyDown (event) {
-    if (this.inputStates[event.code] !== undefined) {
-      this.inputStates[event.code] = true
-    }
-  }
 
-  onKeyUp (event) {
-    if (this.inputStates[event.code] !== undefined) {
-      this.inputStates[event.code] = false
-    }
-  }
+
 
   mainLoop (currentTime) {
     if (this.times.start === null) {
@@ -80,25 +61,6 @@ export class GameLoop {
 
     for (const enemy of this.enemies) {
       enemy.draw(ctx)
-    }
-
-    this.player.speedX = this.player.speedY = 0
-
-    if (this.inputStates.ArrowLeft) {
-      this.player.speedX = -1
-    }
-    if (this.inputStates.ArrowUp) {
-      this.player.speedY = -1
-    }
-    if (this.inputStates.ArrowRight) {
-      this.player.speedX = 1
-    }
-    if (this.inputStates.ArrowDown) {
-      this.player.speedY = 1
-    }
-    if (this.inputStates.Space) {
-      this.player.speedX *= 2
-      this.player.speedY *= 2
     }
 
     this.times.last = currentTime
