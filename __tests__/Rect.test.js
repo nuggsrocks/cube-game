@@ -1,8 +1,9 @@
-import { Rect } from '../src/js/Rect'
+import { Rect } from '../src/js/classes/Rect'
 
 describe('Rect', () => {
   describe('move(timeDelta)', () => {
-    describe('should change x and y values according to given time delta and rect speeds within five decimals', () => {
+    const mockCanvas = {width: 1000, height: 500}
+    describe('should change x and y values according to given time delta and rect speeds', () => {
       it.each([
         {
           rect: {
@@ -15,30 +16,41 @@ describe('Rect', () => {
         },
         {
           rect: {
-            x: 0, y: 0, speedX: 5, speedY: -1
+            x: 0, y: 33.33 / 10, speedX: 5, speedY: -1
           },
           timeDelta: 33.33,
           expected: {
-            x: 5 * 33.33 / 10, y: -1 * 33.33 / 10
+            x: 5 * 33.33 / 10, y: 0
           }
         },
         {
           rect: {
-            x: 0, y: 0, speedX: -10, speedY: 0.01
+            x: 200 / 10, y: 0, speedX: -10, speedY: 0.01
           },
           timeDelta: 20,
           expected: {
-            x: -10 * 20 / 10, y: 0.01 * 20 / 10
+            x: 0, y: 0.01 * 20 / 10
           }
         }
       ])('Rect.move($timeDelta)', ({ rect, timeDelta, expected }) => {
         rect = new Rect(rect)
 
-        rect.move(timeDelta)
+        rect.move(timeDelta, mockCanvas)
 
         expect(rect.x).toBeCloseTo(expected.x, 5)
         expect(rect.y).toBeCloseTo(expected.y, 5)
       })
+    })
+
+    it('should call this.handleBorderCollision method', () => {
+      const rect = new Rect()
+
+      jest.spyOn(rect, 'handleBorderCollision')
+
+      rect.move(10, mockCanvas)
+
+      expect(rect.handleBorderCollision).toHaveBeenCalled()
+
     })
   })
 

@@ -1,7 +1,7 @@
 import '../scss/style.scss'
 
-import { Rect } from './Rect'
-import { GameLoop } from './GameLoop'
+import { Rect } from './classes/Rect'
+import { GameLoop } from './classes/GameLoop'
 
 const canvas = document.createElement('canvas')
 

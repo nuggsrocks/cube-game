@@ -7,9 +7,11 @@ export class Rect {
     this.speedY = speedY
   }
 
-  move (timeDelta) {
+  move (timeDelta, canvas) {
     this.x += this.speedX / (10 / timeDelta)
     this.y += this.speedY / (10 / timeDelta)
+
+    this.handleBorderCollision(canvas)
   }
 
   draw (ctx = { fillRect: () => {} }) {

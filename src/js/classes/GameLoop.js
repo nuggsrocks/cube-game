@@ -1,3 +1,5 @@
+import gameStates from '../constants/gameStates'
+
 export class GameLoop {
   constructor ({
     window = {},
@@ -5,6 +7,8 @@ export class GameLoop {
     enemies = [],
     canvas = {}
   } = {}) {
+    this.gameState = gameStates.MENU
+
     this.times = {
       start: null,
       last: null,
@@ -33,10 +37,6 @@ export class GameLoop {
     this.mainLoop = this.mainLoop.bind(this)
   }
 
-  time (currentTime) {
-    return currentTime - this.times.start
-  }
-
   onKeyDown (event) {
     if (this.inputStates[event.code] !== undefined) {
       this.inputStates[event.code] = true
@@ -54,7 +54,11 @@ export class GameLoop {
       this.times.start = currentTime
     }
 
-    this.times.game = this.time(currentTime)
+    if (this.times.last === null) {
+      this.times.last = currentTime
+    }
+
+    this.times.game = currentTime - this.times.start
 
     for (const enemy of this.enemies) {
       if (this.player.hasCollidedWithRect(enemy)) {
@@ -62,14 +66,10 @@ export class GameLoop {
       }
     }
 
-    this.player.move(currentTime - this.times.last)
-
-    this.player.handleBorderCollision(this.canvas)
+    this.player.move(currentTime - this.times.last, this.canvas)
 
     for (const enemy of this.enemies) {
-      enemy.move(currentTime - this.times.last)
-
-      enemy.handleBorderCollision(this.canvas)
+      enemy.move(currentTime - this.times.last, this.canvas)
     }
 
     const ctx = this.canvas.getContext('2d')
@@ -111,10 +111,12 @@ export class GameLoop {
   }
 
   start () {
+    this.gameState = gameStates.RUNNING
     this.id = this.window.requestAnimationFrame(this.mainLoop)
   }
 
   stop () {
+    this.gameState = gameStates.OVER
     this.window.cancelAnimationFrame(this.id)
   }
 }
