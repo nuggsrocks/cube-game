@@ -15,7 +15,6 @@ export class GameLoop {
       game: 0
     }
 
-
     this.id = null
     this.window = window
 
@@ -26,9 +25,6 @@ export class GameLoop {
 
     this.mainLoop = this.mainLoop.bind(this)
   }
-
-
-
 
   mainLoop (currentTime) {
     if (this.times.start === null) {

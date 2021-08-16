@@ -1,7 +1,7 @@
 import { Rect } from './Rect'
 
 export class Player extends Rect {
-  constructor ({window, rect}) {
+  constructor ({ window, rect }) {
     super(rect)
 
     this.window = window
@@ -52,5 +52,4 @@ export class Player extends Rect {
       this.speedY *= 2
     }
   }
-
 }

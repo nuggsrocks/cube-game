@@ -19,7 +19,7 @@ describe('Player', () => {
       { code: 'ArrowDown' },
       { code: 'ArrowLeft' }
     ])('should modify input state of given key to true', ({ code }) => {
-      const mockEvent = {code}
+      const mockEvent = { code }
 
       const player = new Player({
         window: mockWindow, rect: mockRect
@@ -32,8 +32,8 @@ describe('Player', () => {
     it.each([
       { code: 'KeyD' },
       { code: 'KeyE' }
-    ])('should not add other keys to inputStates object', ({code}) => {
-      const mockEvent = {code}
+    ])('should not add other keys to inputStates object', ({ code }) => {
+      const mockEvent = { code }
 
       const player = new Player({
         window: mockWindow, rect: mockRect
@@ -50,7 +50,7 @@ describe('Player', () => {
 
       jest.spyOn(player, 'setSpeed')
 
-      player.onKeyDown({code: 'KeyX'})
+      player.onKeyDown({ code: 'KeyX' })
 
       expect(player.setSpeed).toHaveBeenCalled()
     })
@@ -63,7 +63,7 @@ describe('Player', () => {
       { code: 'ArrowDown' },
       { code: 'ArrowLeft' }
     ])('should modify input state of given key to false', ({ code }) => {
-      const mockEvent = {code}
+      const mockEvent = { code }
 
       const player = new Player({
         window: mockWindow, rect: mockRect
@@ -78,8 +78,8 @@ describe('Player', () => {
     it.each([
       { code: 'KeyD' },
       { code: 'KeyE' }
-    ])('should not add other keys to inputStates object', ({code}) => {
-      const mockEvent = {code}
+    ])('should not add other keys to inputStates object', ({ code }) => {
+      const mockEvent = { code }
 
       const player = new Player({
         window: mockWindow, rect: mockRect
@@ -96,7 +96,7 @@ describe('Player', () => {
 
       jest.spyOn(player, 'setSpeed')
 
-      player.onKeyDown({code: 'KeyX'})
+      player.onKeyDown({ code: 'KeyX' })
 
       expect(player.setSpeed).toHaveBeenCalled()
     })

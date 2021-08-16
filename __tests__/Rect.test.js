@@ -2,7 +2,7 @@ import { Rect } from '../src/js/classes/Rect'
 
 describe('Rect', () => {
   describe('move(timeDelta)', () => {
-    const mockCanvas = {width: 1000, height: 500}
+    const mockCanvas = { width: 1000, height: 500 }
     describe('should change x and y values according to given time delta and rect speeds', () => {
       it.each([
         {
@@ -50,7 +50,6 @@ describe('Rect', () => {
       rect.move(10, mockCanvas)
 
       expect(rect.handleBorderCollision).toHaveBeenCalled()
-
     })
   })
 
