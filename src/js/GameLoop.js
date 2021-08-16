@@ -1,21 +1,9 @@
 export class GameLoop {
   constructor ({
-    window = {
-      requestAnimationFrame: () => {},
-      cancelAnimationFrame: () => {}
-    },
-    player = {
-      draw: () => {},
-      move: () => {},
-      handleBorderCollision: () => {}
-    },
+    window = {},
+    player = {},
     enemies = [],
-    canvas = {
-      getContext: () => ({
-        clearRect: () => {},
-        fillRect: () => {}
-      })
-    }
+    canvas = {}
   } = {}) {
     this.times = {
       start: null,

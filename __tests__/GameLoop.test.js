@@ -4,6 +4,24 @@ import { Rect } from '../src/js/Rect'
 describe('GameLoop', () => {
   const mockId = '123abc'
 
+  const mockContext = {
+    clearRect: jest.fn(),
+    fillRect: jest.fn()
+  }
+
+  const mockCanvas = {
+    width: 1000,
+    height: 500,
+    getContext: () => mockContext
+  }
+
+  const mockRect = {
+    move: jest.fn(),
+    draw: jest.fn(),
+    hasCollidedWithRect: jest.fn(),
+    handleBorderCollision: jest.fn()
+  }
+
   const mockWindow = {
     requestAnimationFrame: jest.fn(),
     cancelAnimationFrame: jest.fn()
@@ -16,7 +34,9 @@ describe('GameLoop', () => {
       { start: 100, current: 250, expected: 150 },
       { start: 32, current: 100, expected: 68 }
     ])('should return time elapsed from times.start to currentTime', ({ start, current, expected }) => {
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, player: mockRect, enemies: [mockRect, mockRect], canvas: mockCanvas
+      })
 
       gameLoop.times.start = start
 
@@ -33,7 +53,9 @@ describe('GameLoop', () => {
     ])('should modify input state of given key to true', ({ code }) => {
       const mockEvent = {code}
 
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       gameLoop.onKeyDown(mockEvent)
 
@@ -45,7 +67,9 @@ describe('GameLoop', () => {
     ])('should not add other keys to inputStates object', ({code}) => {
       const mockEvent = {code}
 
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       gameLoop.onKeyDown(mockEvent)
 
@@ -62,7 +86,9 @@ describe('GameLoop', () => {
     ])('should modify input state of given key to false', ({ code }) => {
       const mockEvent = {code}
 
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       gameLoop.inputStates[code] = true
 
@@ -76,7 +102,9 @@ describe('GameLoop', () => {
     ])('should not add other keys to inputStates object', ({code}) => {
       const mockEvent = {code}
 
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       gameLoop.onKeyUp(mockEvent)
 
@@ -91,7 +119,9 @@ describe('GameLoop', () => {
       2016,
       2033
     ])('should set times.last property to each time passed into mainLoop (time: %i)', (time) => {
-      const gameLoop = new GameLoop({ window: mockWindow })
+      const gameLoop = new GameLoop({
+        window: mockWindow, player: mockRect, enemies: [mockRect, mockRect], canvas: mockCanvas
+      })
 
       gameLoop.mainLoop(time)
 
@@ -99,7 +129,9 @@ describe('GameLoop', () => {
     })
 
     it('should set times.start property to only first time passed into mainLoop', () => {
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       const times = [10, 20, 30, 40, 50, 60, 70]
 
@@ -115,7 +147,9 @@ describe('GameLoop', () => {
       { start: 100, current: 2000, expected: 1900 },
       { start: 16, current: 20032, expected: 20016 }
     ])('should set times.game property to time returned by time(currentTime)', ({ start, current, expected }) => {
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({
+        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+      })
 
       gameLoop.times.start = start
 
@@ -125,30 +159,18 @@ describe('GameLoop', () => {
     })
 
     it('should call draw method for player and each enemy in each loop', () => {
-      const player = new Rect({ x: 10, y: 10, size: 10 })
-
       const enemies = [
-        new Rect({ x: 200, y: 300, size: 15 }),
-        new Rect({ x: 250, y: 325, size: 25 })
+        mockRect,
+        mockRect
       ]
 
-      jest.spyOn(player, 'draw')
-
-      for (const enemy of enemies) {
-        jest.spyOn(enemy, 'draw')
-      }
-
-      const mockContext = { fillRect: () => {}, clearRect: () => {} }
-
-      const mockCanvas = {
-        getContext: () => mockContext
-      }
-
-      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
+      const gameLoop = new GameLoop({
+        window: mockWindow, player: mockRect, enemies, canvas: mockCanvas
+      })
 
       gameLoop.mainLoop(10)
 
-      expect(player.draw).toHaveBeenCalledWith(mockContext)
+      expect(mockRect.draw).toHaveBeenCalledWith(mockContext)
 
       for (const enemy of enemies) {
         expect(enemy.draw).toHaveBeenCalledWith(mockContext)
@@ -156,26 +178,16 @@ describe('GameLoop', () => {
     })
 
     it('should call move method for player and each enemy in each loop', () => {
-      const player = new Rect({ x: 10, y: 10, size: 10 })
+      const player = mockRect
 
       const enemies = [
-        new Rect({ x: 200, y: 300, size: 15 }),
-        new Rect({ x: 250, y: 325, size: 25 })
+        mockRect,
+        mockRect
       ]
 
-      jest.spyOn(player, 'move')
-
-      for (const enemy of enemies) {
-        jest.spyOn(enemy, 'move')
-      }
-
-      const mockContext = { fillRect: () => {}, clearRect: () => {} }
-
-      const mockCanvas = {
-        getContext: () => mockContext
-      }
-
-      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
+      const gameLoop = new GameLoop({
+        window: mockWindow, player, enemies, canvas: mockCanvas
+      })
 
       gameLoop.mainLoop(10)
 
@@ -187,27 +199,12 @@ describe('GameLoop', () => {
     })
 
     it('should call handleBorderCollision() for player and each enemy in each loop', () => {
-      const player = new Rect({ x: 10, y: 10, size: 10 })
+      const player = mockRect
 
       const enemies = [
-        new Rect({ x: 200, y: 300, size: 15 }),
-        new Rect({ x: 250, y: 325, size: 25 })
+        mockRect,
+        mockRect
       ]
-
-      const mockCanvas = {
-        width: 100,
-        height: 100,
-        getContext: () => ({
-          clearRect: () => {},
-          fillRect: () => {}
-        })
-      }
-
-      jest.spyOn(player, 'handleBorderCollision')
-
-      for (const enemy of enemies) {
-        jest.spyOn(enemy, 'handleBorderCollision')
-      }
 
       const gameLoop = new GameLoop({
         window: mockWindow, player, enemies, canvas: mockCanvas
@@ -264,7 +261,7 @@ describe('GameLoop', () => {
 
       enemies = enemies.map(enemy => new Rect(enemy))
 
-      const gameLoop = new GameLoop({ window: mockWindow, player, enemies })
+      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
 
       jest.spyOn(gameLoop, 'stop')
 
@@ -281,7 +278,7 @@ describe('GameLoop', () => {
   describe('start()', () => {
     mockWindow.requestAnimationFrame = jest.fn(() => mockId)
     it('should pass main loop function into requestAnimationFrame', () => {
-      const gameLoop = new GameLoop({ window: mockWindow })
+      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
       gameLoop.start()
 
@@ -289,7 +286,7 @@ describe('GameLoop', () => {
     })
 
     it('should set id property to value returned by requestAnimationFrame', () => {
-      const gameLoop = new GameLoop({ window: mockWindow })
+      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
       gameLoop.start()
 
@@ -299,7 +296,7 @@ describe('GameLoop', () => {
 
   describe('stop()', () => {
     it('should pass id property into cancelAnimationFrame', () => {
-      const gameLoop = new GameLoop({ window: mockWindow })
+      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
       gameLoop.id = mockId
 
@@ -316,7 +313,7 @@ describe('GameLoop', () => {
       { delta: 1000 / 30, fps: 30 },
       { delta: 1000 / 100, fps: 100 }
     ])('should return correct fps for given delta: calcFps($delta)', ({ delta, fps }) => {
-      const gameLoop = new GameLoop()
+      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
       expect(Math.round(gameLoop.calcFps(delta))).toEqual(fps)
     })
