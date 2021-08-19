@@ -1,6 +1,6 @@
 import { GameLoop } from '../src/js/classes/GameLoop'
-import { Rect } from '../src/js/classes/Rect'
 import { Player } from '../src/js/classes/Player'
+import { Enemy } from '../src/js/classes/Enemy'
 
 describe('GameLoop', () => {
   const mockId = '123abc'
@@ -117,47 +117,12 @@ describe('GameLoop', () => {
       }
     })
 
-    it.each([
-      {
-        player: { x: 5.01, y: 5.01, size: 10 },
-        enemies: [
-          { x: 15, y: 15, size: 10 },
-          { x: 25, y: 25, size: 10 },
-          { x: 35, y: 35, size: 10 }
-        ],
-        called: true
-      },
-      {
-        player: { x: 10, y: 10, size: 10 },
-        enemies: [
-          { x: 25, y: 25, size: 10 },
-          { x: 0, y: 0, size: 10 },
-          { x: 35, y: 35, size: 10 }
-        ],
-        called: false
-      },
-      {
-        player: { x: 10, y: 10, size: 10 },
-        enemies: [
-          { x: 5, y: 5, size: 10 },
-          { x: 15, y: 15, size: 10 },
-          { x: 35, y: 35, size: 10 }
-        ],
-        called: true
-      },
-      {
-        player: { x: 0, y: 0, size: 10 },
-        enemies: [
-          { x: 0, y: 10, size: 10 },
-          { x: 10, y: 0, size: 10 },
-          { x: 0, y: 0, size: 0 }
-        ],
-        called: false
-      }
-    ])('should call this.stop() if player has collided with one of enemies (case $#)', ({ player, enemies, called }) => {
-      player = new Player({ window: mockWindow, rect: player })
+    it('should call this.stop() if player has collided with one of enemies (case $#)', () => {
+      const player = mockRect
 
-      enemies = enemies.map(enemy => new Rect(enemy))
+      player.hasCollidedWithRect.mockImplementation(() => true)
+
+      const enemies = [mockRect, mockRect]
 
       const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
 
@@ -165,11 +130,7 @@ describe('GameLoop', () => {
 
       gameLoop.mainLoop()
 
-      if (called === true) {
-        expect(gameLoop.stop).toHaveBeenCalled()
-      } else {
-        expect(gameLoop.stop).not.toHaveBeenCalled()
-      }
+      expect(gameLoop.stop).toHaveBeenCalled()
     })
   })
 

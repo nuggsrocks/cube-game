@@ -14,7 +14,7 @@ export class Rect {
     this.handleBorderCollision(canvas)
   }
 
-  draw (ctx = { fillRect: () => {} }) {
+  draw (ctx) {
     ctx.fillRect(this.x, this.y, this.size, this.size)
   }
 

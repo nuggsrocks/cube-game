@@ -18,6 +18,16 @@ export class Player extends Rect {
     this.window.onkeyup = (event) => this.onKeyUp(event)
   }
 
+  draw (ctx) {
+    ctx.save()
+
+    ctx.fillStyle = 'black'
+
+    super.draw(ctx)
+
+    ctx.restore()
+  }
+
   onKeyDown (event) {
     if (this.inputStates[event.code] !== undefined) {
       this.inputStates[event.code] = true

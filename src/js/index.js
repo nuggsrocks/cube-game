@@ -3,6 +3,7 @@ import '../scss/style.scss'
 import { Rect } from './classes/Rect'
 import { GameLoop } from './classes/GameLoop'
 import { Player } from './classes/Player'
+import {Enemy} from './classes/Enemy'
 
 const canvas = document.createElement('canvas')
 
@@ -25,12 +26,14 @@ let i = 0
 
 while (i < 10) {
   enemies.push(
-    new Rect({
-      x: getRandomNumber(canvas.width / 2, canvas.width - 50),
-      y: getRandomNumber(0, canvas.height - 50),
-      size: getRandomNumber(10, 50),
-      speedX: getRandomNumber(-5, 5),
-      speedY: getRandomNumber(-5, 5)
+    new Enemy({
+      rect: {
+        x: getRandomNumber(canvas.width / 2, canvas.width - 50),
+        y: getRandomNumber(0, canvas.height - 50),
+        size: getRandomNumber(10, 50),
+        speedX: getRandomNumber(-5, 5),
+        speedY: getRandomNumber(-5, 5)
+      }
     })
   )
   i++

@@ -72,14 +72,13 @@ export class GameLoop {
     ctx.fillText(this.frames.fps.toFixed(2) + ' fps', this.canvas.width * 11 / 12, this.canvas.height / 20)
     ctx.fillText('Time: ' + (this.times.game / 1000).toFixed(2) + ' s', this.canvas.width * 11 / 12, this.canvas.height / 10)
 
+    ctx.restore()
+
     this.player.draw(ctx)
 
-    ctx.fillStyle = 'red'
     for (const enemy of this.enemies) {
       enemy.draw(ctx)
     }
-
-    ctx.restore()
 
     this.times.last = currentTime
 
