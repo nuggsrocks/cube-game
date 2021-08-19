@@ -1,5 +1,3 @@
-import gameStates from '../constants/gameStates'
-
 export class GameLoop {
   constructor ({
     window = {},
@@ -7,12 +5,16 @@ export class GameLoop {
     enemies = [],
     canvas = {}
   } = {}) {
-    this.gameState = gameStates.MENU
-
     this.times = {
       start: null,
       last: null,
       game: 0
+    }
+
+    this.frames = {
+      count: 0,
+      delta: 0,
+      fps: 0
     }
 
     this.id = null
@@ -43,38 +45,57 @@ export class GameLoop {
       }
     }
 
-    this.player.move(currentTime - this.times.last, this.canvas)
+    const delta = currentTime - this.times.last
+
+    this.player.move(delta, this.canvas)
 
     for (const enemy of this.enemies) {
-      enemy.move(currentTime - this.times.last, this.canvas)
+      enemy.move(delta, this.canvas)
+    }
+
+
+    this.frames.count++
+    this.frames.delta += delta
+
+    if (this.frames.delta > 500) {
+      this.frames.fps = this.calcFps(this.frames.delta, this.frames.count)
     }
 
     const ctx = this.canvas.getContext('2d')
 
+    ctx.save()
+
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    ctx.font = '16px sans-serif'
+
+    ctx.fillText(this.frames.fps.toFixed(2) + ' fps', this.canvas.width * 11 / 12, this.canvas.height / 20)
+    ctx.fillText('Time: ' + (this.times.game / 1000).toFixed(2) + ' s', this.canvas.width * 11 / 12, this.canvas.height / 10)
 
     this.player.draw(ctx)
 
+    ctx.fillStyle = 'red'
     for (const enemy of this.enemies) {
       enemy.draw(ctx)
     }
+
+    ctx.restore()
 
     this.times.last = currentTime
 
     this.id = this.window.requestAnimationFrame(this.mainLoop)
   }
 
-  calcFps (delta) {
-    return 1000 / delta
+  calcFps (delta, frameCount) {
+    return 1000 * frameCount / delta
   }
 
   start () {
-    this.gameState = gameStates.RUNNING
     this.id = this.window.requestAnimationFrame(this.mainLoop)
   }
 
   stop () {
-    this.gameState = gameStates.OVER
     this.window.cancelAnimationFrame(this.id)
+
   }
 }

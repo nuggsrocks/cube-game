@@ -1,6 +1,5 @@
 import { GameLoop } from '../src/js/classes/GameLoop'
 import { Rect } from '../src/js/classes/Rect'
-import gameStates from '../src/js/constants/gameStates'
 import { Player } from '../src/js/classes/Player'
 
 describe('GameLoop', () => {
@@ -8,7 +7,10 @@ describe('GameLoop', () => {
 
   const mockContext = {
     clearRect: jest.fn(),
-    fillRect: jest.fn()
+    fillRect: jest.fn(),
+    fillText: jest.fn(),
+    save: jest.fn(),
+    restore: jest.fn()
   }
 
   const mockCanvas = {
@@ -173,13 +175,6 @@ describe('GameLoop', () => {
 
   describe('start()', () => {
     mockWindow.requestAnimationFrame = jest.fn(() => mockId)
-    it('should set gameState property to gameStates.RUNNING', () => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
-
-      gameLoop.start()
-
-      expect(gameLoop.gameState).toEqual(gameStates.RUNNING)
-    })
 
     it('should pass main loop function into requestAnimationFrame', () => {
       const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
@@ -199,13 +194,6 @@ describe('GameLoop', () => {
   })
 
   describe('stop()', () => {
-    it('should set gameState property to gameStates.OVER', () => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
-
-      gameLoop.stop()
-
-      expect(gameLoop.gameState).toEqual(gameStates.OVER)
-    })
     it('should pass id property into cancelAnimationFrame', () => {
       const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
@@ -217,16 +205,16 @@ describe('GameLoop', () => {
     })
   })
 
-  describe('calcFps(delta)', () => {
+  describe('calcFps(delta, frameCount)', () => {
     it.each([
-      { delta: 1000 / 60, fps: 60 },
-      { delta: 1000 / 50, fps: 50 },
-      { delta: 1000 / 30, fps: 30 },
-      { delta: 1000 / 100, fps: 100 }
-    ])('should return correct fps for given delta: calcFps($delta)', ({ delta, fps }) => {
+      { delta: 1000 / 60, frameCount: 1, fps: 60 },
+      { delta: 1600 / 3, frameCount: 16, fps: 30 },
+      { delta: 25000 / 60, frameCount: 25, fps: 60 },
+      { delta: 500, frameCount: 30, fps: 60 }
+    ])('should return correct fps for given delta: calcFps($delta, $frameCount) should return $fps', ({ delta, frameCount, fps }) => {
       const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
-      expect(Math.round(gameLoop.calcFps(delta))).toEqual(fps)
+      expect(Math.round(gameLoop.calcFps(delta, frameCount))).toEqual(fps)
     })
   })
 })

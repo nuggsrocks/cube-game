@@ -13,10 +13,10 @@ canvas.height = root.clientHeight
 
 root.append(canvas)
 
-const player = new Player({ window: window, rect: { x: 10, y: 10, size: 10 } })
+const player = new Player({ window: window, rect: { x: 10, y: 10, size: 20 } })
 
 const getRandomNumber = (min, max) => {
-  return Math.random() * max + min
+  return Math.random() * (max - min) + min
 }
 
 const enemies = []
