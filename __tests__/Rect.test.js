@@ -49,7 +49,7 @@ describe('Rect', () => {
 
       rect.move(10, mockCanvas)
 
-      expect(rect.handleBorderCollision).toHaveBeenCalled()
+      expect(rect.detectBorderCollision).toHaveBeenCalled()
     })
   })
 
@@ -72,7 +72,7 @@ describe('Rect', () => {
         { rect: { x: 0, y: 0, size: 10 }, canvas: { width: 100, height: 100 } },
         { rect: { x: 90, y: 90, size: 10 }, canvas: { width: 100, height: 100 } }
       ])('$rect and $canvas should return false', ({ rect, canvas }) => {
-        expect(new Rect(rect).handleBorderCollision(canvas)).toEqual(false)
+        expect(new Rect(rect).detectBorderCollision(canvas)).toEqual(false)
       })
     })
 
@@ -169,7 +169,7 @@ describe('Rect', () => {
       ])('case $#', ({ rect, canvas, expected }) => {
         rect = new Rect(rect)
 
-        expect(rect.handleBorderCollision(canvas)).toEqual(true)
+        expect(rect.detectBorderCollision(canvas)).toEqual(true)
 
         expect(rect).toEqual(new Rect(expected))
       })

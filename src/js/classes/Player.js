@@ -18,6 +18,31 @@ export class Player extends Rect {
     this.window.onkeyup = (event) => this.onKeyUp(event)
   }
 
+  handleBorderCollision (canvas) {
+    const playerCollisions = super.detectBorderCollision(canvas)
+
+
+    if (playerCollisions.includes('left')) {
+      this.speedX = 0
+      this.x = 0
+    }
+
+    if (playerCollisions.includes('right')) {
+      this.speedX = 0
+      this.x = canvas.width - this.size
+    }
+
+    if (playerCollisions.includes('top')) {
+      this.speedY = 0
+      this.y = 0
+    }
+
+    if (playerCollisions.includes('bottom')) {
+      this.speedY = 0
+      this.y = canvas.height - this.size
+    }
+  }
+
   draw (ctx) {
     ctx.save()
 
@@ -32,14 +57,12 @@ export class Player extends Rect {
     if (this.inputStates[event.code] !== undefined) {
       this.inputStates[event.code] = true
     }
-    this.setSpeed()
   }
 
   onKeyUp (event) {
     if (this.inputStates[event.code] !== undefined) {
       this.inputStates[event.code] = false
     }
-    this.setSpeed()
   }
 
   setSpeed () {

@@ -43,17 +43,6 @@ describe('Player', () => {
 
       expect(player.inputStates).not.toHaveProperty(code)
     })
-    it('should call setSpeed method', () => {
-      const player = new Player({
-        window: mockWindow, rect: mockRect
-      })
-
-      jest.spyOn(player, 'setSpeed')
-
-      player.onKeyDown({ code: 'KeyX' })
-
-      expect(player.setSpeed).toHaveBeenCalled()
-    })
   })
 
   describe('onKeyUp()', () => {
@@ -88,17 +77,6 @@ describe('Player', () => {
       player.onKeyUp(mockEvent)
 
       expect(player.inputStates).not.toHaveProperty(code)
-    })
-    it('should call setSpeed method', () => {
-      const player = new Player({
-        window: mockWindow, rect: mockRect
-      })
-
-      jest.spyOn(player, 'setSpeed')
-
-      player.onKeyDown({ code: 'KeyX' })
-
-      expect(player.setSpeed).toHaveBeenCalled()
     })
   })
 })

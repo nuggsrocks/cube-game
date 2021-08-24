@@ -108,10 +108,19 @@ export class GameLoop {
 
       const delta = currentTime - this.times.last
 
+      this.player.setSpeed()
+
+
       this.player.move(delta, this.canvas)
 
       for (const enemy of this.enemies) {
         enemy.move(delta, this.canvas)
+      }
+
+      this.player.handleBorderCollision(this.canvas)
+
+      for (const enemy of this.enemies) {
+        enemy.handleBorderCollision(this.canvas)
       }
 
 
@@ -128,8 +137,7 @@ export class GameLoop {
 
       this.ctx.font = '16px sans-serif'
 
-      this.ctx.fillText(this.frames.fps.toFixed(2) + ' fps', this.canvas.width * 11 / 12, this.canvas.height / 20)
-      this.ctx.fillText('Time: ' + (this.times.game / 1000).toFixed(2) + ' s', this.canvas.width * 11 / 12, this.canvas.height / 10)
+      this.ctx.fillText('Time: ' + (this.times.game / 1000).toFixed(2) + ' s', this.canvas.width * 11 / 12, this.canvas.height / 20)
 
       this.ctx.restore()
 

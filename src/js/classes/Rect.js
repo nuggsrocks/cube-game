@@ -7,42 +7,32 @@ export class Rect {
     this.speedY = speedY
   }
 
-  move (timeDelta, canvas) {
+  move (timeDelta) {
     this.x += this.speedX / (10 / timeDelta)
     this.y += this.speedY / (10 / timeDelta)
-
-    this.handleBorderCollision(canvas)
   }
 
   draw (ctx) {
     ctx.fillRect(this.x, this.y, this.size, this.size)
   }
 
-  handleBorderCollision (canvas) {
-    let collision = false
+  detectBorderCollision (canvas) {
+    let collision = []
 
     if (this.x < 0) {
-      this.reverseSpeed('x')
-      this.x = 0
-      collision = true
+      collision.push('left')
     }
 
     if (this.x > canvas.width - this.size) {
-      this.reverseSpeed('x')
-      this.x = canvas.width - this.size
-      collision = true
+      collision.push('right')
     }
 
     if (this.y < 0) {
-      this.reverseSpeed('y')
-      this.y = 0
-      collision = true
+      collision.push('top')
     }
 
     if (this.y > canvas.height - this.size) {
-      this.reverseSpeed('y')
-      this.y = canvas.height - this.size
-      collision = true
+      collision.push('bottom')
     }
 
     return collision
@@ -86,18 +76,16 @@ export class Rect {
     return false
   }
 
-  reverseSpeed (...axes) {
-    for (const axis of axes) {
-      if (axis === 'x') {
-        this.speedX *= -1
-        if (this.speedX === 0) {
-          this.speedX = 0
-        }
-      } else {
-        this.speedY *= -1
-        if (this.speedY === 0) {
-          this.speedY = 0
-        }
+  reverseSpeed (axis) {
+    if (axis === 'x') {
+      this.speedX *= -1
+      if (this.speedX === 0) {
+        this.speedX = 0
+      }
+    } else {
+      this.speedY *= -1
+      if (this.speedY === 0) {
+        this.speedY = 0
       }
     }
   }
