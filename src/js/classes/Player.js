@@ -21,7 +21,6 @@ export class Player extends Rect {
   handleBorderCollision (canvas) {
     const playerCollisions = super.detectBorderCollision(canvas)
 
-
     if (playerCollisions.includes('left')) {
       this.speedX = 0
       this.x = 0

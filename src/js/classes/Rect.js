@@ -17,7 +17,7 @@ export class Rect {
   }
 
   detectBorderCollision (canvas) {
-    let collision = []
+    const collision = []
 
     if (this.x < 0) {
       collision.push('left')

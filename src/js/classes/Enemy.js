@@ -8,7 +8,6 @@ export class Enemy extends Rect {
   handleBorderCollision (canvas) {
     const collisions = super.detectBorderCollision(canvas)
 
-
     if (collisions.includes('left')) {
       this.reverseSpeed('x')
       this.x = 0

@@ -130,7 +130,6 @@ describe('GameLoop', () => {
     })
 
     it('should set gameState to OVER if player has collided with one of enemies', () => {
-
       const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
       gameLoop.player.hasCollidedWithRect = jest.fn(() => true)

@@ -1,4 +1,4 @@
-import {gameStates} from '../constants/gameStates'
+import { gameStates } from '../constants/gameStates'
 import { createMainMenu } from '../ui/createMainMenu'
 import { createGameOverMenu } from '../ui/createGameOverMenu'
 import { Player } from './Player'
@@ -28,7 +28,7 @@ export class GameLoop {
     this.reset()
   }
 
-  reset() {
+  reset () {
     this.times = {
       start: null,
       last: null,
@@ -40,7 +40,6 @@ export class GameLoop {
       delta: 0,
       fps: 0
     }
-
 
     this.player = new Player({ window: window, rect: { x: 10, y: 10, size: 20 } })
 
@@ -110,7 +109,6 @@ export class GameLoop {
 
       this.player.setSpeed()
 
-
       this.player.move(delta, this.canvas)
 
       for (const enemy of this.enemies) {
@@ -122,7 +120,6 @@ export class GameLoop {
       for (const enemy of this.enemies) {
         enemy.handleBorderCollision(this.canvas)
       }
-
 
       this.frames.count++
       this.frames.delta += delta
