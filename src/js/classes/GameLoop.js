@@ -15,23 +15,8 @@ export class GameLoop {
   } = {}) {
     this.gameState = gameStates.MENU
 
-    this.times = {
-      start: null,
-      last: null,
-      game: 0
-    }
-
-    this.frames = {
-      count: 0,
-      delta: 0,
-      fps: 0
-    }
-
     this.id = null
     this.window = window
-
-    this.player = null
-    this.enemies = null
 
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
@@ -39,9 +24,11 @@ export class GameLoop {
     this.mainMenu = createMainMenu(this.canvas)
 
     this.mainLoop = this.mainLoop.bind(this)
+
+    this.reset()
   }
 
-  resetGame() {
+  reset() {
     this.times = {
       start: null,
       last: null,
@@ -83,7 +70,7 @@ export class GameLoop {
     if (this.gameState === gameStates.MENU) {
       this.ctx.drawImage(this.mainMenu, 0, 0)
       this.canvas.onclick = (event) => {
-        this.resetGame()
+        this.reset()
         this.gameState = gameStates.RUNNING
         this.canvas.onclick = null
       }
@@ -96,7 +83,7 @@ export class GameLoop {
       this.ctx.drawImage(gameOverMenu, 0, 0)
 
       this.canvas.onclick = (event) => {
-        this.resetGame()
+        this.reset()
         this.gameState = gameStates.RUNNING
         this.canvas.onclick = null
       }

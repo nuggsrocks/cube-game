@@ -8,7 +8,9 @@ describe('GameLoop', () => {
     fillRect: jest.fn(),
     fillText: jest.fn(),
     save: jest.fn(),
-    restore: jest.fn()
+    restore: jest.fn(),
+    drawImage: jest.fn(),
+    font: null
   }
 
   const mockCanvas = {
@@ -16,6 +18,8 @@ describe('GameLoop', () => {
     height: 500,
     getContext: () => mockContext
   }
+
+  document.createElement = jest.fn(() => mockCanvas)
 
   const mockRect = {
     move: jest.fn(),
@@ -37,8 +41,10 @@ describe('GameLoop', () => {
       2033
     ])('should set times.last property to each time passed into mainLoop (time: %i)', (time) => {
       const gameLoop = new GameLoop({
-        window: mockWindow, player: mockRect, enemies: [mockRect, mockRect], canvas: mockCanvas
+        window: mockWindow, canvas: mockCanvas
       })
+
+      gameLoop.gameState = 'RUNNING'
 
       gameLoop.mainLoop(time)
 
@@ -47,8 +53,10 @@ describe('GameLoop', () => {
 
     it('should set times.start property to only first time passed into mainLoop', () => {
       const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+        window: mockWindow, canvas: mockCanvas
       })
+
+      gameLoop.gameState = 'RUNNING'
 
       const times = [10, 20, 30, 40, 50, 60, 70]
 
@@ -65,8 +73,10 @@ describe('GameLoop', () => {
       { start: 16, current: 20032, expected: 20016 }
     ])('should set times.game property with each loop', ({ start, current, expected }) => {
       const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas, enemies: [mockRect, mockRect], player: mockRect
+        window: mockWindow, canvas: mockCanvas
       })
+
+      gameLoop.gameState = 'RUNNING'
 
       gameLoop.times.start = start
 
@@ -76,59 +86,60 @@ describe('GameLoop', () => {
     })
 
     it('should call draw method for player and each enemy in each loop', () => {
-      const enemies = [
-        mockRect,
-        mockRect
-      ]
-
       const gameLoop = new GameLoop({
-        window: mockWindow, player: mockRect, enemies, canvas: mockCanvas
+        window: mockWindow, canvas: mockCanvas
       })
+
+      gameLoop.gameState = 'RUNNING'
+
+      gameLoop.player.draw = jest.fn()
+
+      for (const enemy of gameLoop.enemies) {
+        enemy.draw = jest.fn()
+      }
 
       gameLoop.mainLoop(10)
 
-      expect(mockRect.draw).toHaveBeenCalledWith(mockContext)
+      expect(gameLoop.player.draw).toHaveBeenCalledWith(mockContext)
 
-      for (const enemy of enemies) {
+      for (const enemy of gameLoop.enemies) {
         expect(enemy.draw).toHaveBeenCalledWith(mockContext)
       }
     })
 
     it('should call move method for player and each enemy in each loop', () => {
-      const player = mockRect
-
-      const enemies = [
-        mockRect,
-        mockRect
-      ]
-
       const gameLoop = new GameLoop({
-        window: mockWindow, player, enemies, canvas: mockCanvas
+        window: mockWindow, canvas: mockCanvas
       })
 
-      gameLoop.mainLoop()
+      gameLoop.gameState = 'RUNNING'
 
-      expect(player.move).toHaveBeenCalledWith(0, mockCanvas)
+      gameLoop.player.move = jest.fn()
 
-      for (const enemy of enemies) {
+      for (const enemy of gameLoop.enemies) {
+        enemy.move = jest.fn()
+      }
+
+      gameLoop.mainLoop(0)
+
+      expect(gameLoop.player.move).toHaveBeenCalledWith(0, mockCanvas)
+
+      for (const enemy of gameLoop.enemies) {
         expect(enemy.move).toHaveBeenCalledWith(0, mockCanvas)
       }
     })
 
-    it('should call this.stop() if player has collided with one of enemies (case $#)', () => {
-      const player = mockRect
+    it('should set gameState to OVER if player has collided with one of enemies', () => {
 
-      player.hasCollidedWithRect.mockImplementation(() => true)
+      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
 
-      const enemies = [mockRect, mockRect]
+      gameLoop.player.hasCollidedWithRect = jest.fn(() => true)
 
-      const gameLoop = new GameLoop({ window: mockWindow, player, enemies, canvas: mockCanvas })
-
-      jest.spyOn(gameLoop, 'stop')
+      gameLoop.gameState = 'RUNNING'
 
       gameLoop.mainLoop()
 
-      expect(gameLoop.stop).toHaveBeenCalled()
+      expect(gameLoop.gameState).toEqual('OVER')
     })
   })
 
@@ -149,18 +160,6 @@ describe('GameLoop', () => {
       gameLoop.start()
 
       expect(gameLoop).toHaveProperty('id', mockId)
-    })
-  })
-
-  describe('stop()', () => {
-    it('should pass id property into cancelAnimationFrame', () => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
-
-      gameLoop.id = mockId
-
-      gameLoop.stop()
-
-      expect(mockWindow.cancelAnimationFrame).toHaveBeenCalledWith(mockId)
     })
   })
 
