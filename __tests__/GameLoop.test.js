@@ -1,6 +1,4 @@
 import { GameLoop } from '../src/js/classes/GameLoop'
-import { Player } from '../src/js/classes/Player'
-import { Enemy } from '../src/js/classes/Enemy'
 
 describe('GameLoop', () => {
   const mockId = '123abc'
