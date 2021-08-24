@@ -41,16 +41,6 @@ describe('Rect', () => {
         expect(rect.y).toBeCloseTo(expected.y, 5)
       })
     })
-
-    it('should call this.handleBorderCollision method', () => {
-      const rect = new Rect()
-
-      jest.spyOn(rect, 'handleBorderCollision')
-
-      rect.move(10, mockCanvas)
-
-      expect(rect.detectBorderCollision).toHaveBeenCalled()
-    })
   })
 
   describe('draw(ctx)', () => {
@@ -66,17 +56,17 @@ describe('Rect', () => {
     })
   })
 
-  describe('handleBorderCollision(canvas)', () => {
-    describe('should return false if there is no collision', () => {
+  describe('detectBorderCollision(canvas)', () => {
+    describe('should return empty array if there is no collision', () => {
       it.each([
         { rect: { x: 0, y: 0, size: 10 }, canvas: { width: 100, height: 100 } },
         { rect: { x: 90, y: 90, size: 10 }, canvas: { width: 100, height: 100 } }
       ])('$rect and $canvas should return false', ({ rect, canvas }) => {
-        expect(new Rect(rect).detectBorderCollision(canvas)).toEqual(false)
+        expect(new Rect(rect).detectBorderCollision(canvas)).toEqual([])
       })
     })
 
-    describe('should reverse speed and place rect on border if there is a collision', () => {
+    describe('should return name of border if there is a collision', () => {
       it.each([
         {
           rect: {
@@ -85,9 +75,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
-          }
+          expected: ['left']
         },
         {
           rect: {
@@ -96,9 +84,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 90, y: 0, size: 10, speedX: -1, speedY: 1
-          }
+          expected: ['right']
         },
         {
           rect: {
@@ -107,9 +93,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
-          }
+          expected: ['top']
         },
         {
           rect: {
@@ -118,9 +102,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 0, y: 190, size: 10, speedX: 1, speedY: -1
-          }
+          expected: ['bottom']
         },
         {
           rect: {
@@ -129,9 +111,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 0, y: 0, size: 10, speedX: 1, speedY: 1
-          }
+          expected: ['left', 'top']
         },
         {
           rect: {
@@ -140,9 +120,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 0, y: 190, size: 10, speedX: 1, speedY: -1
-          }
+          expected: ['left', 'bottom']
         },
         {
           rect: {
@@ -151,9 +129,7 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 90, y: 0, size: 10, speedX: -1, speedY: 1
-          }
+          expected: ['right', 'top']
         },
         {
           rect: {
@@ -162,16 +138,12 @@ describe('Rect', () => {
           canvas: {
             width: 100, height: 200
           },
-          expected: {
-            x: 90, y: 190, size: 10, speedX: -1, speedY: -1
-          }
+          expected: ['right', 'bottom']
         }
       ])('case $#', ({ rect, canvas, expected }) => {
         rect = new Rect(rect)
 
-        expect(rect.detectBorderCollision(canvas)).toEqual(true)
-
-        expect(rect).toEqual(new Rect(expected))
+        expect(rect.detectBorderCollision(canvas)).toEqual(expected)
       })
     })
   })
@@ -206,17 +178,14 @@ describe('Rect', () => {
     })
   })
 
-  describe('reverseSpeed(...axes)', () => {
+  describe('reverseSpeed(axis)', () => {
     it.each([
-      { rect: { speedX: 1, speedY: 1 }, axes: ['x'], expected: { speedX: -1, speedY: 1 } },
-      { rect: { speedX: 1, speedY: 1 }, axes: ['y'], expected: { speedX: 1, speedY: -1 } },
-      { rect: { speedX: 1, speedY: 1 }, axes: ['x', 'y'], expected: { speedX: -1, speedY: -1 } },
-      { rect: { speedX: -1, speedY: -1 }, axes: ['x', 'y'], expected: { speedX: 1, speedY: 1 } },
-      { rect: { speedX: 0, speedY: 0 }, axes: ['x', 'y'], expected: { speedX: 0, speedY: 0 } }
-    ])('should reverse speed along given axes', ({ rect, axes, expected }) => {
+      { rect: { speedX: 1, speedY: 1 }, axis: 'x', expected: { speedX: -1, speedY: 1 } },
+      { rect: { speedX: 1, speedY: 1 }, axis: 'y', expected: { speedX: 1, speedY: -1 } }
+    ])('should reverse speed along given axis', ({ rect, axis, expected }) => {
       rect = new Rect(rect)
 
-      rect.reverseSpeed(...axes)
+      rect.reverseSpeed(axis)
 
       expect(rect).toEqual(new Rect(expected))
     })
