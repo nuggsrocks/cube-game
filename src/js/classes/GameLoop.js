@@ -1,6 +1,6 @@
-import { gameStates } from '../constants/gameStates'
-import { createMainMenu } from '../ui/createMainMenu'
-import { createGameOverMenu } from '../ui/createGameOverMenu'
+import { gameStates } from '../gameStates'
+import { drawMainMenu } from '../ui/drawMainMenu'
+import { drawGameOverMenu } from '../ui/drawGameOverMenu'
 import { Player } from './Player'
 import { Enemy } from './Enemy'
 
@@ -21,7 +21,11 @@ export class GameLoop {
     this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
 
-    this.mainMenu = createMainMenu(this.canvas)
+    this.mainMenuCanvas = document.createElement('canvas')
+    this.mainMenuCanvas.width = canvas.width
+    this.mainMenuCanvas.height = canvas.height
+
+    this.mainMenu = drawMainMenu(this.mainMenuCanvas)
 
     this.mainLoop = this.mainLoop.bind(this)
 
@@ -77,7 +81,7 @@ export class GameLoop {
 
     if (this.gameState === gameStates.OVER) {
       const score = Math.round(this.times.game) / 1000
-      const gameOverMenu = createGameOverMenu(this.canvas, score)
+      const gameOverMenu = drawGameOverMenu(this.canvas, score)
 
       this.ctx.drawImage(gameOverMenu, 0, 0)
 
