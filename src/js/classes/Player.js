@@ -11,7 +11,7 @@ export class Player extends Rect {
       ArrowRight: false,
       ArrowDown: false,
       ArrowLeft: false,
-      Space: false
+      Space: false,
     }
 
     this.window.onkeydown = (event) => this.onKeyDown(event)

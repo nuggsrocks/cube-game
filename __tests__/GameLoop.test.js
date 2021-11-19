@@ -10,13 +10,13 @@ describe('GameLoop', () => {
     save: jest.fn(),
     restore: jest.fn(),
     drawImage: jest.fn(),
-    font: null
+    font: null,
   }
 
   const mockCanvas = {
     width: 1000,
     height: 500,
-    getContext: () => mockContext
+    getContext: () => mockContext,
   }
 
   document.createElement = jest.fn(() => mockCanvas)
@@ -25,12 +25,12 @@ describe('GameLoop', () => {
     move: jest.fn(),
     draw: jest.fn(),
     hasCollidedWithRect: jest.fn(),
-    handleBorderCollision: jest.fn()
+    handleBorderCollision: jest.fn(),
   }
 
   const mockWindow = {
     requestAnimationFrame: jest.fn(),
-    cancelAnimationFrame: jest.fn()
+    cancelAnimationFrame: jest.fn(),
   }
 
   describe('mainLoop()', () => {
@@ -38,56 +38,61 @@ describe('GameLoop', () => {
       1000,
       2000,
       2016,
-      2033
-    ])('should set times.last property to each time passed into mainLoop (time: %i)', (time) => {
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas
-      })
+      2033,
+    ])(
+      'should set times.last property to each time passed into mainLoop (time: %i)',
+      (time) => {
+        const gameLoop = new GameLoop({
+          window: mockWindow, canvas: mockCanvas,
+        })
 
-      gameLoop.gameState = 'RUNNING'
+        gameLoop.gameState = 'RUNNING'
 
-      gameLoop.mainLoop(time)
-
-      expect(gameLoop).toHaveProperty('times.last', time)
-    })
-
-    it('should set times.start property to only first time passed into mainLoop', () => {
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas
-      })
-
-      gameLoop.gameState = 'RUNNING'
-
-      const times = [10, 20, 30, 40, 50, 60, 70]
-
-      for (const time of times) {
         gameLoop.mainLoop(time)
-      }
 
-      expect(gameLoop).toHaveProperty('times.start', times[0])
-    })
+        expect(gameLoop).toHaveProperty('times.last', time)
+      })
+
+    it(
+      'should set times.start property to only first time passed into mainLoop',
+      () => {
+        const gameLoop = new GameLoop({
+          window: mockWindow, canvas: mockCanvas,
+        })
+
+        gameLoop.gameState = 'RUNNING'
+
+        const times = [10, 20, 30, 40, 50, 60, 70]
+
+        for (const time of times) {
+          gameLoop.mainLoop(time)
+        }
+
+        expect(gameLoop).toHaveProperty('times.start', times[0])
+      })
 
     it.each([
       { start: 1000, current: 2000, expected: 1000 },
       { start: 100, current: 2000, expected: 1900 },
-      { start: 16, current: 20032, expected: 20016 }
-    ])('should set times.game property with each loop', ({ start, current, expected }) => {
-      const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas
+      { start: 16, current: 20032, expected: 20016 },
+    ])('should set times.game property with each loop',
+      ({ start, current, expected }) => {
+        const gameLoop = new GameLoop({
+          window: mockWindow, canvas: mockCanvas,
+        })
+
+        gameLoop.gameState = 'RUNNING'
+
+        gameLoop.times.start = start
+
+        gameLoop.mainLoop(current)
+
+        expect(gameLoop).toHaveProperty('times.game', expected)
       })
-
-      gameLoop.gameState = 'RUNNING'
-
-      gameLoop.times.start = start
-
-      gameLoop.mainLoop(current)
-
-      expect(gameLoop).toHaveProperty('times.game', expected)
-    })
 
     it('should call draw method for player and each enemy in each loop', () => {
       const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas
+        window: mockWindow, canvas: mockCanvas,
       })
 
       gameLoop.gameState = 'RUNNING'
@@ -109,7 +114,7 @@ describe('GameLoop', () => {
 
     it('should call move method for player and each enemy in each loop', () => {
       const gameLoop = new GameLoop({
-        window: mockWindow, canvas: mockCanvas
+        window: mockWindow, canvas: mockCanvas,
       })
 
       gameLoop.gameState = 'RUNNING'
@@ -129,17 +134,20 @@ describe('GameLoop', () => {
       }
     })
 
-    it('should set gameState to OVER if player has collided with one of enemies', () => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
+    it(
+      'should set gameState to OVER if player has collided with one of enemies',
+      () => {
+        const gameLoop = new GameLoop(
+          { window: mockWindow, canvas: mockCanvas })
 
-      gameLoop.player.hasCollidedWithRect = jest.fn(() => true)
+        gameLoop.player.hasCollidedWithRect = jest.fn(() => true)
 
-      gameLoop.gameState = 'RUNNING'
+        gameLoop.gameState = 'RUNNING'
 
-      gameLoop.mainLoop()
+        gameLoop.mainLoop()
 
-      expect(gameLoop.gameState).toEqual('OVER')
-    })
+        expect(gameLoop.gameState).toEqual('OVER')
+      })
   })
 
   describe('start()', () => {
@@ -150,16 +158,19 @@ describe('GameLoop', () => {
 
       gameLoop.start()
 
-      expect(mockWindow.requestAnimationFrame).toHaveBeenCalledWith(gameLoop.mainLoop)
+      expect(mockWindow.requestAnimationFrame).
+        toHaveBeenCalledWith(gameLoop.mainLoop)
     })
 
-    it('should set id property to value returned by requestAnimationFrame', () => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
+    it('should set id property to value returned by requestAnimationFrame',
+      () => {
+        const gameLoop = new GameLoop(
+          { window: mockWindow, canvas: mockCanvas })
 
-      gameLoop.start()
+        gameLoop.start()
 
-      expect(gameLoop).toHaveProperty('id', mockId)
-    })
+        expect(gameLoop).toHaveProperty('id', mockId)
+      })
   })
 
   describe('calcFps(delta, frameCount)', () => {
@@ -167,11 +178,14 @@ describe('GameLoop', () => {
       { delta: 1000 / 60, frameCount: 1, fps: 60 },
       { delta: 1600 / 3, frameCount: 16, fps: 30 },
       { delta: 25000 / 60, frameCount: 25, fps: 60 },
-      { delta: 500, frameCount: 30, fps: 60 }
-    ])('should return correct fps for given delta: calcFps($delta, $frameCount) should return $fps', ({ delta, frameCount, fps }) => {
-      const gameLoop = new GameLoop({ window: mockWindow, canvas: mockCanvas })
+      { delta: 500, frameCount: 30, fps: 60 },
+    ])(
+      'should return correct fps for given delta: calcFps($delta, $frameCount) should return $fps',
+      ({ delta, frameCount, fps }) => {
+        const gameLoop = new GameLoop(
+          { window: mockWindow, canvas: mockCanvas })
 
-      expect(Math.round(gameLoop.calcFps(delta, frameCount))).toEqual(fps)
-    })
+        expect(Math.round(gameLoop.calcFps(delta, frameCount))).toEqual(fps)
+      })
   })
 })

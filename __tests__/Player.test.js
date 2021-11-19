@@ -5,24 +5,24 @@ describe('Player', () => {
     move: jest.fn(),
     draw: jest.fn(),
     hasCollidedWithRect: jest.fn(),
-    handleBorderCollision: jest.fn()
+    handleBorderCollision: jest.fn(),
   }
 
   const mockWindow = {
     requestAnimationFrame: jest.fn(),
-    cancelAnimationFrame: jest.fn()
+    cancelAnimationFrame: jest.fn(),
   }
   describe('onKeyDown()', () => {
     it.each([
       { code: 'ArrowUp' },
       { code: 'ArrowRight' },
       { code: 'ArrowDown' },
-      { code: 'ArrowLeft' }
+      { code: 'ArrowLeft' },
     ])('should modify input state of given key to true', ({ code }) => {
       const mockEvent = { code }
 
       const player = new Player({
-        window: mockWindow, rect: mockRect
+        window: mockWindow, rect: mockRect,
       })
 
       player.onKeyDown(mockEvent)
@@ -31,12 +31,12 @@ describe('Player', () => {
     })
     it.each([
       { code: 'KeyD' },
-      { code: 'KeyE' }
+      { code: 'KeyE' },
     ])('should not add other keys to inputStates object', ({ code }) => {
       const mockEvent = { code }
 
       const player = new Player({
-        window: mockWindow, rect: mockRect
+        window: mockWindow, rect: mockRect,
       })
 
       player.onKeyDown(mockEvent)
@@ -50,12 +50,12 @@ describe('Player', () => {
       { code: 'ArrowUp' },
       { code: 'ArrowRight' },
       { code: 'ArrowDown' },
-      { code: 'ArrowLeft' }
+      { code: 'ArrowLeft' },
     ])('should modify input state of given key to false', ({ code }) => {
       const mockEvent = { code }
 
       const player = new Player({
-        window: mockWindow, rect: mockRect
+        window: mockWindow, rect: mockRect,
       })
 
       player.inputStates[code] = true
@@ -66,12 +66,12 @@ describe('Player', () => {
     })
     it.each([
       { code: 'KeyD' },
-      { code: 'KeyE' }
+      { code: 'KeyE' },
     ])('should not add other keys to inputStates object', ({ code }) => {
       const mockEvent = { code }
 
       const player = new Player({
-        window: mockWindow, rect: mockRect
+        window: mockWindow, rect: mockRect,
       })
 
       player.onKeyUp(mockEvent)
