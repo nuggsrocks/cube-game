@@ -21,7 +21,6 @@ export function mainLoop (game, currentTime) {
 
     drawGameOverMenu(game.canvas, score)
 
-
     game.canvas.onclick = (event) => {
       game.reset()
       game.gameState = gameStates.RUNNING
