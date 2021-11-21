@@ -15,9 +15,9 @@ export function createEnemies (game) {
           y: getRandomNumber(0, game.canvas.height - 50),
           size: getRandomNumber(10, 50),
           speedX: getRandomNumber(-5, 5),
-          speedY: getRandomNumber(-5, 5),
-        },
-      }),
+          speedY: getRandomNumber(-5, 5)
+        }
+      })
     )
   }
 

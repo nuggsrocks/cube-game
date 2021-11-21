@@ -87,5 +87,4 @@ export function mainLoop (game, currentTime) {
 
     game.times.last = currentTime
   }
-
 }

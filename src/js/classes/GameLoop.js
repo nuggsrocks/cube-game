@@ -20,20 +20,19 @@ export class GameLoop {
     this.times = {
       start: null,
       last: null,
-      game: 0,
+      game: 0
     }
 
     this.frames = {
       count: 0,
       delta: 0,
-      fps: 0,
+      fps: 0
     }
 
     this.player = new Player(
       { window: window, rect: { x: 10, y: 10, size: 20 } })
 
     this.enemies = createEnemies(this)
-
   }
 
   calcFps (delta, frameCount) {

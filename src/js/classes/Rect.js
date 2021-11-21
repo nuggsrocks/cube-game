@@ -43,14 +43,14 @@ export class Rect {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.size, y: rect.y },
       { x: rect.x, y: rect.y + rect.size },
-      { x: rect.x + rect.size, y: rect.y + rect.size },
+      { x: rect.x + rect.size, y: rect.y + rect.size }
     ]
 
     this.points = [
       { x: this.x, y: this.y },
       { x: this.x + this.size, y: this.y },
       { x: this.x, y: this.y + this.size },
-      { x: this.x + this.size, y: this.y + this.size },
+      { x: this.x + this.size, y: this.y + this.size }
     ]
 
     for (const point of rectPoints) {
