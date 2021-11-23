@@ -8,7 +8,7 @@ const app = express()
 app.use(express.static(path.join(__dirname, '/public')))
 
 app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 
 const uri = process.env.MONGO_URI
 
@@ -18,7 +18,7 @@ MongoClient.connect(uri).then(async (client) => {
   const collection = await client.db('cubeGame').collection('scores')
 
   app.route('/db/insert').post((req, res) => {
-    collection.insertOne({name: req.query.name, score: req.query.score}).then((doc) => {
+    collection.insertOne({ name: req.query.name, score: req.query.score }).then((doc) => {
       console.log('Successful insertion')
 
       res.send('OK')

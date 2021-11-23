@@ -1,13 +1,9 @@
 import { gameStates } from '../gameStates'
-import { drawGameOverMenu } from '../ui/drawGameOverMenu'
-
 
 const mainMenu = document.querySelector('#main-menu')
 const gameOverMenu = document.querySelector('#game-over-menu')
 
-
 export function mainLoop (game, currentTime) {
-
   const ctx = game.canvas.getContext('2d')
 
   ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
