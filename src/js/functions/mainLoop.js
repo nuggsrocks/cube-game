@@ -1,15 +1,27 @@
 import { gameStates } from '../gameStates'
 import { drawGameOverMenu } from '../ui/drawGameOverMenu'
-import { drawMainMenu } from '../ui/drawMainMenu'
+
+
+const mainMenu = document.querySelector('#main-menu')
+const gameOverMenu = document.querySelector('#game-over-menu')
+
 
 export function mainLoop (game, currentTime) {
+
   const ctx = game.canvas.getContext('2d')
 
   ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
 
   if (game.gameState === gameStates.MENU) {
-    drawMainMenu(game.canvas)
-    game.canvas.onclick = (event) => {
+    const canvasDisplay = game.canvas.style.getPropertyValue('display')
+    const mainMenuDisplay = mainMenu.style.getPropertyValue('display')
+
+    if (mainMenuDisplay === 'none' || canvasDisplay !== 'none') {
+      game.canvas.style.setProperty('display', 'none')
+      mainMenu.style.setProperty('display', 'block')
+    }
+
+    mainMenu.querySelector('button').onclick = (event) => {
       game.reset()
       game.gameState = gameStates.RUNNING
       game.canvas.onclick = null
@@ -19,9 +31,17 @@ export function mainLoop (game, currentTime) {
   if (game.gameState === gameStates.OVER) {
     const score = Math.round(game.times.game) / 1000
 
-    drawGameOverMenu(game.canvas, score)
+    const canvasDisplay = game.canvas.style.getPropertyValue('display')
+    const gameOverMenuDisplay = gameOverMenu.style.getPropertyValue('display')
 
-    game.canvas.onclick = (event) => {
+    if (gameOverMenuDisplay === 'none' || canvasDisplay !== 'none') {
+      game.canvas.style.setProperty('display', 'none')
+
+      gameOverMenu.querySelector('#score').textContent = score
+      gameOverMenu.style.setProperty('display', 'block')
+    }
+
+    gameOverMenu.onclick = (event) => {
       game.reset()
       game.gameState = gameStates.RUNNING
       game.canvas.onclick = null
@@ -29,6 +49,16 @@ export function mainLoop (game, currentTime) {
   }
 
   if (game.gameState === gameStates.RUNNING) {
+    const canvasDisplay = game.canvas.style.getPropertyValue('display')
+    const mainMenuDisplay = mainMenu.style.getPropertyValue('display')
+    const gameOverMenuDisplay = gameOverMenu.style.getPropertyValue('display')
+
+    if (canvasDisplay === 'none' || mainMenuDisplay !== 'none' || gameOverMenuDisplay !== 'none') {
+      mainMenu.style.setProperty('display', 'none')
+      gameOverMenu.style.setProperty('display', 'none')
+      game.canvas.style.setProperty('display', 'block')
+    }
+
     if (game.times.start === null) {
       game.times.start = currentTime
     }
