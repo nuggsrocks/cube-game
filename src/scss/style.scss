@@ -3,17 +3,40 @@ body {
 }
 
 main {
+	display: inline-block;
 	height: 90vh;
+	width: 100vw;
 }
 
 canvas, .menu {
 	border: 2px solid black;
-	height: 100%;
 }
 
 .menu {
+	height: 100%;
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
 	justify-content: center;
+}
+
+h1 {
+	font-family: Georgia, serif;
+}
+
+p {
+	font-family: sans-serif;
+}
+
+button {
+	background-color: #e0454f;
+	border: 1px solid black;
+	cursor: pointer;
+	margin: 1rem;
+	padding: 0.5rem;
+	font-size: 1.5rem;
+
+	&:hover {
+		background-color: #e0459d;
+	}
 }
