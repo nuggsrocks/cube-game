@@ -5,7 +5,7 @@ import { mainLoop } from '../functions/mainLoop'
 
 export class GameLoop {
   constructor ({ window, canvas } = {}) {
-    this.gameState = gameStates.MENU
+    this.gameState = gameStates.RUNNING
 
     this.id = null
     this.window = window
