@@ -1,17 +1,17 @@
 export const difficulties = {
-  'easy': {
+  easy: {
     minSpeed: 1,
     maxSpeed: 3
   },
-  'medium': {
+  medium: {
     minSpeed: 2,
     maxSpeed: 4
   },
-  'hard': {
+  hard: {
     minSpeed: 3,
     maxSpeed: 5
   },
-  'impossible': {
+  impossible: {
     minSpeed: 8,
     maxSpeed: 10
   }
