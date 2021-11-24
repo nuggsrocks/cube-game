@@ -26,8 +26,10 @@ canvas.height = root.clientHeight
 const mainMenu = document.querySelector('#main-menu')
 const gameOverMenu = document.querySelector('#game-over-menu')
 
-mainMenu.querySelector('button').onclick = (event) => {
-  localStorage.setItem('name', mainMenu.querySelector('input').value)
+mainMenu.querySelector('form').onsubmit = (event) => {
+  event.preventDefault()
+
+  localStorage.setItem('name', name)
   mainMenu.style.setProperty('display', 'none')
   canvas.style.setProperty('display', 'flex')
   game.id = window.requestAnimationFrame(game.mainLoop)

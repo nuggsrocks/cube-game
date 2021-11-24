@@ -12,12 +12,15 @@ canvas, .menu {
 	border: 2px solid black;
 }
 
-.menu {
-	height: 100%;
+.menu, form {
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
 	justify-content: center;
+}
+
+.menu {
+	height: 100%;
 }
 
 h1 {
@@ -25,15 +28,16 @@ h1 {
 }
 
 p {
-	font-family: sans-serif;
+	font-family: Arial, sans-serif;
 }
 
-button {
+input[type="submit"] {
 	background-color: #e0454f;
 	border: 1px solid black;
+	border-radius: 5px;
 	cursor: pointer;
 	margin: 1rem;
-	padding: 0.5rem;
+	padding: 0.5rem 1rem;
 	font-size: 1.5rem;
 
 	&:hover {
