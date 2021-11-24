@@ -11,8 +11,8 @@ import { handleTimes } from './functions/handleTimes'
 import { saveScoreToDb } from './functions/saveScoreToDb'
 import { moveRects } from './functions/moveRects'
 import { resetGame } from './functions/resetGame'
-import {resetTimes} from './functions/resetTimes'
-import {resetFrames} from './functions/resetFrames'
+import { resetTimes } from './functions/resetTimes'
+import { resetFrames } from './functions/resetFrames'
 
 const canvas = document.querySelector('canvas')
 
@@ -26,10 +26,16 @@ canvas.height = root.clientHeight
 const mainMenu = document.querySelector('#main-menu')
 const gameOverMenu = document.querySelector('#game-over-menu')
 
-mainMenu.querySelector('form').onsubmit = (event) => {
+const form = mainMenu.querySelector('form')
+
+form.onsubmit = (event) => {
   event.preventDefault()
 
-  localStorage.setItem('name', name)
+  localStorage.setItem('name', form.querySelector('#name'))
+  game.difficulty = form.querySelector('#difficulty').value
+
+  game.enemies = createEnemies(game)
+
   mainMenu.style.setProperty('display', 'none')
   canvas.style.setProperty('display', 'flex')
   game.id = window.requestAnimationFrame(game.mainLoop)
@@ -84,5 +90,3 @@ const game = {
     gameOverMenu.style.setProperty('display', 'flex')
   }
 }
-
-game.enemies = createEnemies(game)

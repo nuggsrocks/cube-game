@@ -5,5 +5,5 @@ export const saveScoreToDb = (score) => {
   }), {
     method: 'POST'
   }).then(() => console.log('Inserted db entry!'))
-  .catch(err => console.error(err))
+    .catch(err => console.error(err))
 }

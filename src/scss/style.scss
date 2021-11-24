@@ -21,17 +21,21 @@ canvas, .menu {
 
 .menu {
 	height: 100%;
+	color: white;
+	background-color: #333333;
 }
 
 h1 {
 	font-family: Georgia, serif;
 }
 
-p {
+p, label {
 	font-family: Arial, sans-serif;
+	font-size: 1rem;
+	margin: 0.5rem;
 }
 
-input[type="submit"] {
+input[type="submit"], button {
 	background-color: #e0454f;
 	border: 1px solid black;
 	border-radius: 5px;
