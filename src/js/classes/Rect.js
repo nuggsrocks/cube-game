@@ -8,8 +8,8 @@ export class Rect {
   }
 
   move (timeDelta) {
-    this.x += this.speedX / (10 / timeDelta)
-    this.y += this.speedY / (10 / timeDelta)
+    this.x += this.speedX * timeDelta
+    this.y += this.speedY * timeDelta
   }
 
   draw (ctx) {

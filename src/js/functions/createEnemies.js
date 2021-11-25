@@ -8,7 +8,6 @@ export function createEnemies (game) {
     return Math.random() * (max - min) + min
   }
 
-  console.log(game.difficulty)
   const { minSpeed, maxSpeed } = difficulties[game.difficulty]
 
   for (let i = 0; i < 10; i++) {

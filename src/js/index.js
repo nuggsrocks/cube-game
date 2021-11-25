@@ -77,7 +77,7 @@ const game = {
 
     gameOverMenu.querySelector('#score').textContent = Math.round(score) / 1000
 
-    saveScoreToDb(score)
+    saveScoreToDb(score, game.difficulty)
 
     gameOverMenu.querySelector('button').onclick = () => {
       gameOverMenu.style.setProperty('display', 'none')

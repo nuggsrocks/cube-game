@@ -1,7 +1,8 @@
-export const saveScoreToDb = (score) => {
+export const saveScoreToDb = (score, difficulty) => {
   fetch('/db/insert?' + new URLSearchParams({
     name: localStorage.name,
-    score
+    score,
+    difficulty
   }), {
     method: 'POST'
   }).then(() => console.log('Inserted db entry!'))

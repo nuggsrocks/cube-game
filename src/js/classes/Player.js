@@ -49,6 +49,10 @@ export class Player extends Rect {
 
     super.draw(ctx)
 
+    ctx.strokeStyle = 'white'
+
+    ctx.strokeRect(this.x, this.y, this.size, this.size)
+
     ctx.restore()
   }
 
@@ -68,16 +72,16 @@ export class Player extends Rect {
     this.speedX = this.speedY = 0
 
     if (this.inputStates.ArrowLeft) {
-      this.speedX = -1
+      this.speedX = -0.1
     }
     if (this.inputStates.ArrowUp) {
-      this.speedY = -1
+      this.speedY = -0.1
     }
     if (this.inputStates.ArrowRight) {
-      this.speedX = 1
+      this.speedX = 0.1
     }
     if (this.inputStates.ArrowDown) {
-      this.speedY = 1
+      this.speedY = 0.1
     }
     if (this.inputStates.Space) {
       this.speedX *= 2.5
