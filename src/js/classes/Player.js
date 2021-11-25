@@ -80,8 +80,8 @@ export class Player extends Rect {
       this.speedY = 1
     }
     if (this.inputStates.Space) {
-      this.speedX *= 2
-      this.speedY *= 2
+      this.speedX *= 2.5
+      this.speedY *= 2.5
     }
   }
 }

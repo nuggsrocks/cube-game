@@ -12,7 +12,7 @@ export const difficulties = {
     maxSpeed: 5
   },
   impossible: {
-    minSpeed: 8,
-    maxSpeed: 10
+    minSpeed: 6,
+    maxSpeed: 8
   }
 }
