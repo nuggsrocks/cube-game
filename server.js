@@ -18,14 +18,29 @@ MongoClient.connect(uri).then(async (client) => {
   const collection = await client.db('cubeGame').collection('scores')
 
   app.route('/db/insert').post((req, res) => {
-    collection.insertOne({ name: req.query.name, score: req.query.score }).then((doc) => {
+    const { name, score, difficulty } = req.query
+    collection.insertOne({ name, score, difficulty }).then((doc) => {
       console.log('Successful insertion')
 
       res.send('OK')
     }).catch(err => {
       console.error(err)
-      res.status(500).send('Database error!', err)
+      res.status(500).send('Database error!')
     })
+  })
+
+  app.route('/db/retrieve').get((req, res) => {
+    collection.find().toArray().then(arr => {
+      res.send(arr)
+    }).catch(e => {
+      console.error(e)
+      res.status(500).send('Database error!')
+    })
+  })
+
+  app.route('/db/delete').get((req, res) => {
+    collection.deleteMany({}).then(() => console.log('deleted')).catch(e => console.error(e))
+    res.send('OK')
   })
 
   app.route('/').get((req, res) => {
@@ -36,7 +51,7 @@ MongoClient.connect(uri).then(async (client) => {
     res.status(404).type('text').send('404 Not Found')
   })
 }).catch((err) => {
-  console.error(err)
+  console.error('Mongo connection failed!', err)
 
   app.route('/').get((req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'))

@@ -31,7 +31,7 @@ const form = mainMenu.querySelector('form')
 form.onsubmit = (event) => {
   event.preventDefault()
 
-  localStorage.setItem('name', form.querySelector('#name'))
+  localStorage.setItem('name', form.querySelector('#name').value)
   game.difficulty = form.querySelector('#difficulty').value
 
   game.enemies = createEnemies(game)
@@ -77,7 +77,7 @@ const game = {
 
     gameOverMenu.querySelector('#score').textContent = Math.round(score) / 1000
 
-    saveScoreToDb(score, game.difficulty)
+    saveScoreToDb(localStorage.name, score, game.difficulty)
 
     gameOverMenu.querySelector('button').onclick = () => {
       gameOverMenu.style.setProperty('display', 'none')
