@@ -1,5 +1,4 @@
 import 'regenerator-runtime/runtime'
-
 import '../scss/style.scss'
 
 import { Player } from './classes/Player'
@@ -28,10 +27,16 @@ const gameOverMenu = document.querySelector('#game-over-menu')
 
 const form = mainMenu.querySelector('form')
 
+const nameInput = form.querySelector('#name')
+
+if (localStorage.getItem('name')) {
+  nameInput.value = localStorage.getItem('name')
+}
+
 form.onsubmit = (event) => {
   event.preventDefault()
 
-  localStorage.setItem('name', form.querySelector('#name').value)
+  localStorage.setItem('name', nameInput.value)
   game.difficulty = form.querySelector('#difficulty').value
 
   game.enemies = createEnemies(game)
@@ -43,8 +48,8 @@ form.onsubmit = (event) => {
 
 const game = {
   canvas,
-  times: resetTimes({}),
-  frames: resetFrames({}),
+  times: resetTimes(),
+  frames: resetFrames(),
   player: new Player({ window: window, rect: { x: 10, y: 10, size: 20 } }),
   mainLoop: (currentTime) => {
     if (isGameOver(game)) {

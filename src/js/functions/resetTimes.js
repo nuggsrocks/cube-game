@@ -1,4 +1,4 @@
-export const resetTimes = (times) => {
+export const resetTimes = (times = {}) => {
   times.start = null
   times.last = null
   times.game = 0

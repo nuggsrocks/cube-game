@@ -72,20 +72,20 @@ export class Player extends Rect {
     this.speedX = this.speedY = 0
 
     if (this.inputStates.ArrowLeft) {
-      this.speedX = -0.1
+      this.speedX = -0.125
     }
     if (this.inputStates.ArrowUp) {
-      this.speedY = -0.1
+      this.speedY = -0.125
     }
     if (this.inputStates.ArrowRight) {
-      this.speedX = 0.1
+      this.speedX = 0.125
     }
     if (this.inputStates.ArrowDown) {
-      this.speedY = 0.1
+      this.speedY = 0.125
     }
     if (this.inputStates.Space) {
-      this.speedX *= 2.5
-      this.speedY *= 2.5
+      this.speedX *= 2
+      this.speedY *= 2
     }
   }
 }

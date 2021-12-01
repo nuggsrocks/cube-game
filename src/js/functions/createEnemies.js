@@ -8,13 +8,13 @@ export function createEnemies (game) {
     return Math.random() * (max - min) + min
   }
 
-  const { minSpeed, maxSpeed } = difficulties[game.difficulty]
+  const { minSpeed, maxSpeed, numOfEnemies } = difficulties[game.difficulty]
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < numOfEnemies; i++) {
     enemies.push(
       new Enemy({
         rect: {
-          x: getRandomNumber(game.canvas.width / 2, game.canvas.width - 50),
+          x: getRandomNumber(game.canvas.width / 10, game.canvas.width - 50),
           y: getRandomNumber(0, game.canvas.height - 50),
           size: getRandomNumber(10, 50),
           speedX: getRandomNumber(minSpeed, maxSpeed) * (Math.random() > 0.5 ? 1 : -1),
