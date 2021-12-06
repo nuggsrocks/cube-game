@@ -31,10 +31,12 @@ class Menu extends HTMLElement {
 
     this.attachShadow({mode: 'open'})
 
+    const form = template.content.querySelector('form')
+
+    form.replaceChild(selectTemplate.content.cloneNode(true), form.querySelector('slot'))
+
     this.shadowRoot.append(styleTemplate.content.cloneNode(true))
     this.shadowRoot.append(template.content.cloneNode(true))
-
-    this.shadowRoot.querySelector('slot[name="select-difficulty"]').append(selectTemplate.content.cloneNode(true))
   }
 }
 
@@ -119,7 +121,12 @@ const game = {
 
     gameOverMenu.shadowRoot.querySelector('#score').textContent = Math.round(score) / 1000
 
-    gameOverMenu.shadowRoot.querySelector('button').onclick = () => {
+
+    gameOverMenu.shadowRoot.querySelector('form').onsubmit = (event) => {
+      event.preventDefault()
+
+      game.difficulty = gameOverMenu.shadowRoot.querySelector('select').value
+
       gameOverMenu.remove()
       canvas.style.setProperty('display', 'flex')
 

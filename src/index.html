@@ -25,8 +25,10 @@
 		<div id='game-over-menu' class='menu'>
 			<h1>GAME OVER!</h1>
 			<p>You lasted <span id='score'></span> seconds.</p>
-			<slot name='select-difficulty'></slot>
-			<button>Play Again!</button>
+			<form>
+				<slot name='select-difficulty'></slot>
+				<button>Play Again!</button>
+			</form>
 		</div>
 	</template>
 
