@@ -5,6 +5,10 @@ export const saveScoreToDb = (name, score, difficulty) => {
     difficulty
   }), {
     method: 'POST'
-  }).then(() => console.log('Inserted db entry!'))
-    .catch(err => console.error(err))
+  }).then(res => {
+    if (!res.ok) {
+      throw new Error('Database insertion failed!')
+    }
+    console.log('Inserted db entry!')
+  }).catch(err => console.error(err))
 }

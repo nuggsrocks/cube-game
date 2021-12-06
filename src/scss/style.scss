@@ -8,43 +8,6 @@ main {
 	width: 100vw;
 }
 
-canvas, .menu {
+canvas {
 	border: 2px solid black;
-}
-
-.menu, form {
-	display: flex;
-	flex-flow: column nowrap;
-	align-items: center;
-	justify-content: center;
-}
-
-.menu {
-	height: 100%;
-	color: white;
-	background-color: #333333;
-}
-
-h1 {
-	font-family: Georgia, serif;
-}
-
-p, label {
-	font-family: Arial, sans-serif;
-	font-size: 1rem;
-	margin: 0.5rem;
-}
-
-input[type="submit"], button {
-	background-color: #e0454f;
-	border: 1px solid black;
-	border-radius: 5px;
-	cursor: pointer;
-	margin: 1rem;
-	padding: 0.5rem 1rem;
-	font-size: 1.5rem;
-
-	&:hover {
-		background-color: #e0459d;
-	}
 }

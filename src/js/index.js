@@ -22,12 +22,46 @@ const borderWidth = 2
 canvas.width = root.clientWidth - borderWidth * 2
 canvas.height = root.clientHeight
 
-const mainMenu = document.querySelector('#main-menu')
-const gameOverMenu = document.querySelector('#game-over-menu')
+class Menu extends HTMLElement {
+  constructor (templateId) {
+    super()
+    const template = document.querySelector(templateId)
+    const styleTemplate = document.querySelector('#menu-style-template')
+    const selectTemplate = document.querySelector('#select-difficulty-template')
 
-const form = mainMenu.querySelector('form')
+    this.attachShadow({mode: 'open'})
 
-const nameInput = form.querySelector('#name')
+    this.shadowRoot.append(styleTemplate.content.cloneNode(true))
+    this.shadowRoot.append(template.content.cloneNode(true))
+
+    this.shadowRoot.querySelector('slot[name="select-difficulty"]').append(selectTemplate.content.cloneNode(true))
+  }
+}
+
+class MainMenu extends Menu {
+  constructor () {
+    super('#main-menu-template')
+  }
+}
+
+class GameOverMenu extends Menu {
+  constructor () {
+    super('#game-over-menu-template')
+  }
+}
+
+customElements.define('main-menu', MainMenu)
+customElements.define('game-over', GameOverMenu)
+
+const mainMenu = new MainMenu()
+const gameOverMenu = new GameOverMenu()
+
+root.append(mainMenu)
+
+const form = mainMenu.shadowRoot.querySelector('form')
+
+const nameInput = form.querySelector('input#name')
+const difficultySelect = form.querySelector('select')
 
 if (localStorage.getItem('name')) {
   nameInput.value = localStorage.getItem('name')
@@ -37,11 +71,12 @@ form.onsubmit = (event) => {
   event.preventDefault()
 
   localStorage.setItem('name', nameInput.value)
-  game.difficulty = form.querySelector('#difficulty').value
+
+  game.difficulty = difficultySelect.value
 
   game.enemies = createEnemies(game)
 
-  mainMenu.style.setProperty('display', 'none')
+  mainMenu.remove()
   canvas.style.setProperty('display', 'flex')
   game.id = window.requestAnimationFrame(game.mainLoop)
 }
@@ -80,18 +115,18 @@ const game = {
 
     const score = game.times.game
 
-    gameOverMenu.querySelector('#score').textContent = Math.round(score) / 1000
-
     saveScoreToDb(localStorage.name, score, game.difficulty)
 
-    gameOverMenu.querySelector('button').onclick = () => {
-      gameOverMenu.style.setProperty('display', 'none')
+    gameOverMenu.shadowRoot.querySelector('#score').textContent = Math.round(score) / 1000
+
+    gameOverMenu.shadowRoot.querySelector('button').onclick = () => {
+      gameOverMenu.remove()
       canvas.style.setProperty('display', 'flex')
 
       resetGame(game)
       game.id = window.requestAnimationFrame(game.mainLoop)
     }
 
-    gameOverMenu.style.setProperty('display', 'flex')
+    root.append(gameOverMenu)
   }
 }
