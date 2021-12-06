@@ -2,6 +2,7 @@ import 'regenerator-runtime/runtime'
 import '../scss/style.scss'
 
 import { Player } from './classes/Player'
+import { Menu } from './classes/Menu'
 import { createEnemies } from './functions/createEnemies'
 import { drawFrame } from './functions/drawFrame'
 import { handleFrames } from './functions/handleFrames'
@@ -21,24 +22,6 @@ const borderWidth = 2
 
 canvas.width = root.clientWidth - borderWidth * 2
 canvas.height = root.clientHeight
-
-class Menu extends HTMLElement {
-  constructor (templateId) {
-    super()
-    const template = document.querySelector(templateId)
-    const styleTemplate = document.querySelector('#menu-style-template')
-    const selectTemplate = document.querySelector('#select-difficulty-template')
-
-    this.attachShadow({mode: 'open'})
-
-    const form = template.content.querySelector('form')
-
-    form.replaceChild(selectTemplate.content.cloneNode(true), form.querySelector('slot'))
-
-    this.shadowRoot.append(styleTemplate.content.cloneNode(true))
-    this.shadowRoot.append(template.content.cloneNode(true))
-  }
-}
 
 class MainMenu extends Menu {
   constructor () {
@@ -120,7 +103,6 @@ const game = {
     saveScoreToDb(localStorage.name, score, game.difficulty)
 
     gameOverMenu.shadowRoot.querySelector('#score').textContent = Math.round(score) / 1000
-
 
     gameOverMenu.shadowRoot.querySelector('form').onsubmit = (event) => {
       event.preventDefault()
