@@ -1,4 +1,4 @@
-import { Rect } from '../src/js/classes/Rect'
+import { Rect } from '../Rect'
 import { describe, it, expect, jest } from '@jest/globals'
 
 describe('Rect', () => {
@@ -14,25 +14,25 @@ describe('Rect', () => {
                         },
                         timeDelta: 16.66,
                         expected: {
-                            x: 16.66 / 10, y: 16.66 / 10
+                            x: 16.66, y: 16.66
                         }
                     },
                     {
                         rect: {
-                            x: 0, y: 33.33 / 10, speedX: 5, speedY: -1
+                            x: 0, y: 3, speedX: 5, speedY: -1
                         },
                         timeDelta: 33.33,
                         expected: {
-                            x: 5 * 33.33 / 10, y: 0
+                            x: 5 * 33.33, y: 3 - 33.33
                         }
                     },
                     {
                         rect: {
-                            x: 200 / 10, y: 0, speedX: -10, speedY: 0.01
+                            x: 20, y: 0, speedX: -10, speedY: 0.01
                         },
                         timeDelta: 20,
                         expected: {
-                            x: 0, y: 0.01 * 20 / 10
+                            x: 20 + 20 * -10, y: 0 + 0.01 * 20
                         }
                     }
                 ])('Rect.move($timeDelta)', ({ rect, timeDelta, expected }) => {

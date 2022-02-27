@@ -8,8 +8,7 @@
     "build:prod": "rm -rf dist && webpack --config webpack.prod.js",
     "start": "nodemon server.js",
     "lint": "eslint . --fix",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "npm run lint && jest --watch"
   },
   "repository": {
     "type": "git",

@@ -10,3 +10,6 @@ node_modules/
 
 # webpack
 dist/
+
+# coverage
+coverage/

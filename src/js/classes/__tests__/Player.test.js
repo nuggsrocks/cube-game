@@ -1,4 +1,4 @@
-import { Player } from '../src/js/classes/Player'
+import { Player } from '../Player'
 import { describe, it, expect, jest } from '@jest/globals'
 
 describe('Player', () => {
