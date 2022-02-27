@@ -5,7 +5,7 @@ module.exports = {
   target: 'web',
   entry: './src/js/index.js',
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js'
   },
   module: {
@@ -21,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$/,
-        use: 'file-loader'
+        type: 'asset'
       }
     ]
   },
