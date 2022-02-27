@@ -1,9 +1,12 @@
-# Dependency directories
+# npm
 node_modules/
 
-# dotenv environment variables file
+# environment variables
 .env
 
-# IntelliJ files
+# ides
 .idea/
-public/
+.vscode/
+
+# webpack
+dist/
