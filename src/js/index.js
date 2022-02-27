@@ -24,15 +24,15 @@ canvas.width = root.clientWidth - borderWidth * 2
 canvas.height = root.clientHeight
 
 class MainMenu extends Menu {
-  constructor () {
-    super('#main-menu-template')
-  }
+    constructor () {
+        super('#main-menu-template')
+    }
 }
 
 class GameOverMenu extends Menu {
-  constructor () {
-    super('#game-over-menu-template')
-  }
+    constructor () {
+        super('#game-over-menu-template')
+    }
 }
 
 customElements.define('main-menu', MainMenu)
@@ -49,73 +49,73 @@ const nameInput = form.querySelector('input#name')
 const difficultySelect = form.querySelector('select')
 
 if (localStorage.getItem('name')) {
-  nameInput.value = localStorage.getItem('name')
+    nameInput.value = localStorage.getItem('name')
 }
 
 form.onsubmit = (event) => {
-  event.preventDefault()
+    event.preventDefault()
 
-  localStorage.setItem('name', nameInput.value)
+    localStorage.setItem('name', nameInput.value)
 
-  game.difficulty = difficultySelect.value
+    game.difficulty = difficultySelect.value
 
-  game.enemies = createEnemies(game)
+    game.enemies = createEnemies(game)
 
-  mainMenu.remove()
-  canvas.style.setProperty('display', 'flex')
-  game.id = window.requestAnimationFrame(game.mainLoop)
+    mainMenu.remove()
+    canvas.style.setProperty('display', 'flex')
+    game.id = window.requestAnimationFrame(game.mainLoop)
 }
 
 const game = {
-  canvas,
-  times: resetTimes(),
-  frames: resetFrames(),
-  player: new Player({ window: window, rect: { x: 10, y: 10, size: 20 } }),
-  mainLoop: (currentTime) => {
-    if (isGameOver(game)) {
-      window.cancelAnimationFrame(game.id)
-      return game.end()
+    canvas,
+    times: resetTimes(),
+    frames: resetFrames(),
+    player: new Player({ window: window, rect: { x: 10, y: 10, size: 20 } }),
+    mainLoop: (currentTime) => {
+        if (isGameOver(game)) {
+            window.cancelAnimationFrame(game.id)
+            return game.end()
+        }
+
+        handleTimes(game, currentTime)
+
+        const delta = currentTime - game.times.last
+
+        handleFrames(game, delta)
+
+        moveRects(game, delta)
+
+        const ctx = game.canvas.getContext('2d')
+
+        ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
+
+        drawFrame(game, ctx)
+
+        game.times.last = currentTime
+
+        game.id = window.requestAnimationFrame(game.mainLoop)
+    },
+    end: () => {
+        canvas.style.setProperty('display', 'none')
+
+        const score = game.times.game
+
+        saveScoreToDb(localStorage.name, score, game.difficulty)
+
+        gameOverMenu.shadowRoot.querySelector('#score').textContent = Math.round(score) / 1000
+
+        gameOverMenu.shadowRoot.querySelector('form').onsubmit = (event) => {
+            event.preventDefault()
+
+            game.difficulty = gameOverMenu.shadowRoot.querySelector('select').value
+
+            gameOverMenu.remove()
+            canvas.style.setProperty('display', 'flex')
+
+            resetGame(game)
+            game.id = window.requestAnimationFrame(game.mainLoop)
+        }
+
+        root.append(gameOverMenu)
     }
-
-    handleTimes(game, currentTime)
-
-    const delta = currentTime - game.times.last
-
-    handleFrames(game, delta)
-
-    moveRects(game, delta)
-
-    const ctx = game.canvas.getContext('2d')
-
-    ctx.clearRect(0, 0, game.canvas.width, game.canvas.height)
-
-    drawFrame(game, ctx)
-
-    game.times.last = currentTime
-
-    game.id = window.requestAnimationFrame(game.mainLoop)
-  },
-  end: () => {
-    canvas.style.setProperty('display', 'none')
-
-    const score = game.times.game
-
-    saveScoreToDb(localStorage.name, score, game.difficulty)
-
-    gameOverMenu.shadowRoot.querySelector('#score').textContent = Math.round(score) / 1000
-
-    gameOverMenu.shadowRoot.querySelector('form').onsubmit = (event) => {
-      event.preventDefault()
-
-      game.difficulty = gameOverMenu.shadowRoot.querySelector('select').value
-
-      gameOverMenu.remove()
-      canvas.style.setProperty('display', 'flex')
-
-      resetGame(game)
-      game.id = window.requestAnimationFrame(game.mainLoop)
-    }
-
-    root.append(gameOverMenu)
-  }
 }
